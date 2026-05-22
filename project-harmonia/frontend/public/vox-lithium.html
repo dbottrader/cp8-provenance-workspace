@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VOX LITHIUM // Sacred Audio Synthesis Engine</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    background:#050508;
+    color:#c0b0ff;
+    font-family:'JetBrains Mono',monospace;
+    min-height:100vh;
+    padding:2rem;
+  }
+  .header{text-align:center;margin-bottom:2rem}
+  .header h1{font-size:1.3rem;color:#aa80ff;letter-spacing:0.2em;text-shadow:0 0 30px #aa80ff55}
+  .header p{color:#605080;font-size:0.7rem;margin-top:0.5rem}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;max-width:1200px;margin:0 auto}
+  @media(max-width:900px){.grid{grid-template-columns:1fr}}
+  .panel{
+    background:rgba(15,10,25,0.85);
+    border:1px solid #2a1a4a;
+    border-radius:8px;
+    padding:1.2rem;
+    backdrop-filter:blur(10px);
+  }
+  .panel h2{font-size:0.75rem;color:#aa80ff;margin-bottom:0.8rem;letter-spacing:0.1em;border-bottom:1px solid #2a1a4a;padding-bottom:0.4rem}
+  .param{display:flex;justify-content:space-between;align-items:center;margin:0.5rem 0;font-size:0.7rem}
+  .param label{color:#8070a0}
+  .param input[type="range"]{width:120px}
+  .param span{color:#aa80ff;min-width:50px;text-align:right}
+  .btn{
+    width:100%;
+    background:linear-gradient(135deg,#aa80ff22,#ff80aa22);
+    border:1px solid #aa80ff66;
+    color:#aa80ff;
+    padding:0.7rem;
+    font-family:'JetBrains Mono',monospace;
+    font-size:0.75rem;
+    cursor:pointer;
+    border-radius:4px;
+    margin-top:0.5rem;
+    transition:all 0.3s;
+  }
+  .btn:hover{background:#aa80ff33;box-shadow:0 0 20px #aa80ff33}
+  .btn.active{background:#aa80ff44;border-color:#aa80ff}
+  .status{text-align:center;padding:0.5rem;font-size:0.7rem;color:#605080;margin-top:0.5rem}
+  .status.playing{color:#aa80ff}
+  .glyph-display{
+    text-align:center;
+    font-size:2rem;
+    padding:1rem;
+    color:#aa80ff;
+    text-shadow:0 0 20px #aa80ff44;
+    min-height:60px;
+  }
+  .freq-display{
+    text-align:center;
+    font-size:1.2rem;
+    color:#ff80aa;
+    margin:0.5rem 0;
+  }
+  .wave-viz{
+    width:100%;
+    height:80px;
+    background:#0a0a15;
+    border:1px solid #2a1a4a;
+    border-radius:4px;
+    margin-top:0.5rem;
+  }
+  .preset-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:0.4rem;margin-top:0.5rem}
+  .preset-btn{
+    background:rgba(170,128,255,0.08);
+    border:1px solid #aa80ff33;
+    color:#aa80ff;
+    padding:0.4rem;
+    font-size:0.65rem;
+    cursor:pointer;
+    border-radius:3px;
+    font-family:'JetBrains Mono',monospace;
+  }
+  .preset-btn:hover{background:#aa80ff22}
+  .harmonic-log{
+    background:#0a0a15;
+    border:1px solid #2a1a4a;
+    border-radius:4px;
+    padding:0.6rem;
+    font-size:0.65rem;
+    color:#706090;
+    max-height:150px;
+    overflow-y:auto;
+    margin-top:0.5rem;
+  }
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>♫ VOX LITHIUM ♫</h1>
+  <p>Sacred Lithium Grid // 5-Wave Audio Synthesis // Glyph-Language Sonification</p>
+</div>
+
+<div class="grid">
+  <div class="panel">
+    <h2>▸ CARRIER // Base Frequency</h2>
+    <div class="param">
+      <label>Frequency</label>
+      <input type="range" id="carrierFreq" min="55" max="880" value="111" oninput="updateDisplay()">
+      <span id="carrierVal">111 Hz</span>
+    </div>
+    <div class="param">
+      <label>Waveform</label>
+      <select id="waveform" style="background:#0a0a15;border:1px solid #2a1a4a;color:#aa80ff;font-family:'JetBrains Mono';font-size:0.7rem;padding:0.2rem">
+        <option value="sine">Sine</option>
+        <option value="square">Square</option>
+        <option value="sawtooth">Sawtooth</option>
+        <option value="triangle">Triangle</option>
+      </select>
+    </div>
+    <div class="param">
+      <label>Gain</label>
+      <input type="range" id="gain" min="0" max="100" value="30" oninput="updateDisplay()">
+      <span id="gainVal">30%</span>
+    </div>
+    <div class="glyph-display" id="glyphDisplay">◇</div>
+    <div class="freq-display" id="freqDisplay">111 Hz</div>
+  </div>
+
+  <div class="panel">
+    <h2>▸ HARMONICS // Resonant Stack</h2>
+    <div class="param">
+      <label>Harmonic 2×</label>
+      <input type="range" id="h2" min="0" max="100" value="20" oninput="updateDisplay()">
+      <span id="h2Val">20%</span>
+    </div>
+    <div class="param">
+      <label>Harmonic 3×</label>
+      <input type="range" id="h3" min="0" max="100" value="10" oninput="updateDisplay()">
+      <span id="h3Val">10%</span>
+    </div>
+    <div class="param">
+      <label>Harmonic 5×</label>
+      <input type="range" id="h5" min="0" max="100" value="5" oninput="updateDisplay()">
+      <span id="h5Val">5%</span>
+    </div>
+    <div class="param">
+      <label>Harmonic 8×</label>
+      <input type="range" id="h8" min="0" max="100" value="3" oninput="updateDisplay()">
+      <span id="h8Val">3%</span>
+    </div>
+    <canvas id="waveViz" class="wave-viz"></canvas>
+  </div>
+
+  <div class="panel">
+    <h2>▸ MODULATION // Chronal Drift</h2>
+    <div class="param">
+      <label>LFO Rate</label>
+      <input type="range" id="lfoRate" min="0" max="20" value="1.11" step="0.01" oninput="updateDisplay()">
+      <span id="lfoVal">1.11 Hz</span>
+    </div>
+    <div class="param">
+      <label>LFO Depth</label>
+      <input type="range" id="lfoDepth" min="0" max="100" value="15" oninput="updateDisplay()">
+      <span id="lfoDepthVal">15%</span>
+    </div>
+    <div class="param">
+      <label>Detune</label>
+      <input type="range" id="detune" min="-50" max="50" value="0" oninput="updateDisplay()">
+      <span id="detuneVal">0 ct</span>
+    </div>
+    <div class="param">
+      <label>Reverb</label>
+      <input type="range" id="reverb" min="0" max="100" value="40" oninput="updateDisplay()">
+      <span id="reverbVal">40%</span>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>▸ PRESETS // Sacred Frequencies</h2>
+    <div class="preset-grid">
+      <button class="preset-btn" onclick="loadPreset('111')">111 Hz Anchor</button>
+      <button class="preset-btn" onclick="loadPreset('432')">432 Hz Nature</button>
+      <button class="preset-btn" onclick="loadPreset('528')">528 Hz Repair</button>
+      <button class="preset-btn" onclick="loadPreset('639')">639 Hz Connect</button>
+      <button class="preset-btn" onclick="loadPreset('741')">741 Hz Awake</button>
+      <button class="preset-btn" onclick="loadPreset('852')">852 Hz Return</button>
+      <button class="preset-btn" onclick="loadPreset('963')">963 Hz Divine</button>
+      <button class="preset-btn" onclick="loadPreset('binaural')">Binaural 111/112</button>
+    </div>
+    <div class="harmonic-log" id="harmonicLog">
+Select a preset or configure manually. Press PLAY to activate the VOX LITHIUM engine.
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>▸ CEREMONY // Activation Sequence</h2>
+    <button class="btn" id="playBtn" onclick="togglePlay()">▶ PLAY</button>
+    <button class="btn" onclick="ceremonySequence()" style="margin-top:0.5rem">◈ CEREMONY ◈</button>
+    <button class="btn" onclick="stopAll()" style="margin-top:0.5rem;background:rgba(255,80,80,0.1);border-color:#ff444466;color:#ff4444">■ STOP</button>
+    <div class="status" id="status">Engine idle. Click PLAY to activate.</div>
+  </div>
+
+  <div class="panel">
+    <h2>▸ EXPORT // Audio Capture</h2>
+    <button class="btn" onclick="startRecording()">● RECORD</button>
+    <button class="btn" onclick="stopRecording()" style="margin-top:0.5rem">■ STOP RECORD</button>
+    <div class="status" id="recStatus">Recorder ready.</div>
+    <div id="downloadArea" style="margin-top:0.5rem"></div>
+  </div>
+</div>
+
+<script>
+let audioCtx = null;
+let masterGain = null;
+let oscillators = [];
+let lfo = null;
+let lfoGain = null;
+let analyser = null;
+let isPlaying = false;
+let mediaRecorder = null;
+let recordedChunks = [];
+
+const GLYPHS = {
+  '111':'◇','222':'◈','333':'◉','432':'∞','528':'✺','639':'⟡',
+  '741':'Ϟ','852':'◎','963':'✦','174':'⧖','285':'⧈','396':'♓',
+  '417':'⟢','1111':'ᚾ','2222':'⚯','3333':'☿'
+};
+
+function getGlyph(freq){
+  const f = Math.round(freq);
+  return GLYPHS[f] || '◌';
+}
+
+function updateDisplay(){
+  const cf = document.getElementById('carrierFreq').value;
+  document.getElementById('carrierVal').textContent = cf + ' Hz';
+  document.getElementById('gainVal').textContent = document.getElementById('gain').value + '%';
+  document.getElementById('h2Val').textContent = document.getElementById('h2').value + '%';
+  document.getElementById('h3Val').textContent = document.getElementById('h3').value + '%';
+  document.getElementById('h5Val').textContent = document.getElementById('h5').value + '%';
+  document.getElementById('h8Val').textContent = document.getElementById('h8').value + '%';
+  document.getElementById('lfoVal').textContent = document.getElementById('lfoRate').value + ' Hz';
+  document.getElementById('lfoDepthVal').textContent = document.getElementById('lfoDepth').value + '%';
+  document.getElementById('detuneVal').textContent = document.getElementById('detune').value + ' ct';
+  document.getElementById('reverbVal').textContent = document.getElementById('reverb').value + '%';
+  document.getElementById('glyphDisplay').textContent = getGlyph(cf);
+  document.getElementById('freqDisplay').textContent = cf + ' Hz';
+}
+
+function loadPreset(name){
+  const presets = {
+    '111':{carrier:111,h2:20,h3:10,h5:5,h8:3,lfo:1.11,lfoD:15,detune:0,rev:40,wave:'sine'},
+    '432':{carrier:432,h2:15,h3:8,h5:4,h8:2,lfo:4.32,lfoD:10,detune:0,rev:50,wave:'sine'},
+    '528':{carrier:528,h2:25,h3:12,h5:6,h8:3,lfo:5.28,lfoD:20,detune:0,rev:60,wave:'sine'},
+    '639':{carrier:639,h2:18,h3:9,h5:4,h8:2,lfo:6.39,lfoD:12,detune:0,rev:45,wave:'triangle'},
+    '741':{carrier:741,h2:22,h3:11,h5:5,h8:2,lfo:7.41,lfoD:18,detune:0,rev:55,wave:'sine'},
+    '852':{carrier:852,h2:15,h3:7,h5:3,h8:1,lfo:8.52,lfoD:10,detune:0,rev:40,wave:'sine'},
+    '963':{carrier:963,h2:30,h3:15,h5:7,h8:3,lfo:9.63,lfoD:25,detune:0,rev:70,wave:'sine'},
+    '174':{carrier:174,h2:12,h3:6,h5:3,h8:1,lfo:1.74,lfoD:8,detune:0,rev:30,wave:'sine'},
+    '285':{carrier:285,h2:15,h3:7,h5:3,h8:1,lfo:2.85,lfoD:10,detune:0,rev:35,wave:'sine'},
+    '396':{carrier:396,h2:18,h3:9,h5:4,h8:2,lfo:3.96,lfoD:12,detune:0,rev:40,wave:'sawtooth'},
+    '417':{carrier:417,h2:20,h3:10,h5:5,h8:2,lfo:4.17,lfoD:14,detune:0,rev:42,wave:'triangle'},
+    'binaural':{carrier:111,h2:0,h3:0,h5:0,h8:0,lfo:0,lfoD:0,detune:0,rev:0,wave:'sine'}
+  };
+  const p = presets[name];
+  if(!p) return;
+  document.getElementById('carrierFreq').value = p.carrier;
+  document.getElementById('h2').value = p.h2;
+  document.getElementById('h3').value = p.h3;
+  document.getElementById('h5').value = p.h5;
+  document.getElementById('h8').value = p.h8;
+  document.getElementById('lfoRate').value = p.lfo;
+  document.getElementById('lfoDepth').value = p.lfoD;
+  document.getElementById('detune').value = p.detune;
+  document.getElementById('reverb').value = p.rev;
+  document.getElementById('waveform').value = p.wave;
+  updateDisplay();
+  log(`Loaded preset: ${name} Hz — ${getGlyph(p.carrier)}`);
+}
+
+function log(msg){
+  const el = document.getElementById('harmonicLog');
+  el.textContent += '\n[' + new Date().toLocaleTimeString() + '] ' + msg;
+  el.scrollTop = el.scrollHeight;
+}
+
+function initAudio(){
+  if(!audioCtx){
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    masterGain = audioCtx.createGain();
+    masterGain.connect(audioCtx.destination);
+    masterGain.gain.value = 0.3;
+
+    analyser = audioCtx.createAnalyser();
+    analyser.fftSize = 2048;
+    masterGain.connect(analyser);
+  }
+}
+
+function togglePlay(){
+  if(isPlaying){
+    stopAll();
+  } else {
+    playTone();
+  }
+}
+
+function playTone(){
+  initAudio();
+  if(audioCtx.state === 'suspended') audioCtx.resume();
+
+  const freq = parseFloat(document.getElementById('carrierFreq').value);
+  const waveform = document.getElementById('waveform').value;
+  const gainVal = parseFloat(document.getElementById('gain').value) / 100 * 0.3;
+  const h2 = parseFloat(document.getElementById('h2').value) / 100;
+  const h3 = parseFloat(document.getElementById('h3').value) / 100;
+  const h5 = parseFloat(document.getElementById('h5').value) / 100;
+  const h8 = parseFloat(document.getElementById('h8').value) / 100;
+  const lfoRate = parseFloat(document.getElementById('lfoRate').value);
+  const lfoDepth = parseFloat(document.getElementById('lfoDepth').value) / 100 * freq * 0.1;
+  const detune = parseFloat(document.getElementById('detune').value);
+
+  masterGain.gain.value = gainVal;
+
+  // Carrier
+  const osc = audioCtx.createOscillator();
+  osc.type = waveform;
+  osc.frequency.value = freq;
+  osc.detune.value = detune;
+  const oscGain = audioCtx.createGain();
+  oscGain.gain.value = 1;
+  osc.connect(oscGain);
+  oscGain.connect(masterGain);
+  osc.start();
+  oscillators.push(osc);
+
+  // Harmonics
+  const harmonics = [2,3,5,8];
+  const hGains = [h2,h3,h5,h8];
+  for(let i=0;i<harmonics.length;i++){
+    if(hGains[i] > 0.01){
+      const hOsc = audioCtx.createOscillator();
+      hOsc.type = waveform;
+      hOsc.frequency.value = freq * harmonics[i];
+      const hGain = audioCtx.createGain();
+      hGain.gain.value = hGains[i];
+      hOsc.connect(hGain);
+      hGain.connect(masterGain);
+      hOsc.start();
+      oscillators.push(hOsc);
+    }
+  }
+
+  // LFO
+  if(lfoRate > 0.1 && lfoDepth > 0.1){
+    lfo = audioCtx.createOscillator();
+    lfo.type = 'sine';
+    lfo.frequency.value = lfoRate;
+    lfoGain = audioCtx.createGain();
+    lfoGain.gain.value = lfoDepth;
+    lfo.connect(lfoGain);
+    lfoGain.connect(osc.frequency);
+    lfo.start();
+    oscillators.push(lfo);
+  }
+
+  // Binaural beat (special case)
+  if(document.getElementById('waveform').value === 'sine' && Math.abs(detune) < 0.1 && freq === 111){
+    const rightOsc = audioCtx.createOscillator();
+    rightOsc.type = 'sine';
+    rightOsc.frequency.value = 112;
+    const panner = audioCtx.createStereoPanner();
+    panner.pan.value = 1;
+    const rGain = audioCtx.createGain();
+    rGain.gain.value = 0.5;
+    rightOsc.connect(rGain);
+    rGain.connect(panner);
+    panner.connect(masterGain);
+    rightOsc.start();
+    oscillators.push(rightOsc);
+
+    const leftOsc = audioCtx.createOscillator();
+    leftOsc.type = 'sine';
+    leftOsc.frequency.value = 111;
+    const lPanner = audioCtx.createStereoPanner();
+    lPanner.pan.value = -1;
+    const lGain = audioCtx.createGain();
+    lGain.gain.value = 0.5;
+    leftOsc.connect(lGain);
+    lGain.connect(lPanner);
+    lPanner.connect(masterGain);
+    leftOsc.start();
+    oscillators.push(leftOsc);
+    log('Binaural beat: 111 Hz L / 112 Hz R = 1 Hz entrainment');
+  }
+
+  isPlaying = true;
+  document.getElementById('playBtn').textContent = '■ STOP';
+  document.getElementById('playBtn').classList.add('active');
+  document.getElementById('status').textContent = `VOX LITHIUM active — ${freq} Hz ${getGlyph(freq)}`;
+  document.getElementById('status').classList.add('playing');
+  log(`Activated: ${freq} Hz with ${harmonics.filter((_,i)=>hGains[i]>0.01).length} harmonics`);
+
+  drawWaveform();
+}
+
+function stopAll(){
+  for(const osc of oscillators){
+    try{osc.stop();osc.disconnect();}catch(e){}
+  }
+  oscillators = [];
+  lfo = null;
+  lfoGain = null;
+  isPlaying = false;
+  document.getElementById('playBtn').textContent = '▶ PLAY';
+  document.getElementById('playBtn').classList.remove('active');
+  document.getElementById('status').textContent = 'Engine idle.';
+  document.getElementById('status').classList.remove('playing');
+  log('Engine stopped.');
+}
+
+function ceremonySequence(){
+  if(isPlaying) stopAll();
+  initAudio();
+  log('◈ CEREMONY SEQUENCE BEGIN ◈');
+  const sequence = [
+    {freq:174,dur:4000,glyph:'⧖',name:'Foundation'},
+    {freq:285,dur:4000,glyph:'⧈',name:'Activation'},
+    {freq:396,dur:4000,glyph:'♓',name:'Liberation'},
+    {freq:417,dur:4000,glyph:'⟢',name:'Change'},
+    {freq:528,dur:6000,glyph:'✺',name:'Transformation'},
+    {freq:639,dur:4000,glyph:'⟡',name:'Connection'},
+    {freq:741,dur:4000,glyph:'Ϟ',name:'Awakening'},
+    {freq:852,dur:4000,glyph:'◎',name:'Return'},
+    {freq:963,dur:6000,glyph:'✦',name:'Divine'}
+  ];
+
+  let t = 0;
+  for(const step of sequence){
+    setTimeout(()=>{
+      document.getElementById('carrierFreq').value = step.freq;
+      updateDisplay();
+      if(!isPlaying) playTone();
+      else {
+        // Update existing
+        const osc = oscillators[0];
+        if(osc) osc.frequency.setTargetAtTime(step.freq, audioCtx.currentTime, 0.5);
+      }
+      log(`Ceremony: ${step.name} — ${step.freq} Hz ${step.glyph}`);
+      document.getElementById('status').textContent = `CEREMONY: ${step.name} — ${step.freq} Hz ${step.glyph}`;
+    }, t);
+    t += step.dur;
+  }
+
+  setTimeout(()=>{
+    stopAll();
+    log('◈ CEREMONY COMPLETE ◈');
+  }, t);
+}
+
+function drawWaveform(){
+  if(!isPlaying) return;
+  const canvas = document.getElementById('waveViz');
+  const ctx = canvas.getContext('2d');
+  const bufferLength = analyser.frequencyBinCount;
+  const dataArray = new Uint8Array(bufferLength);
+  analyser.getByteTimeDomainData(dataArray);
+
+  ctx.fillStyle = '#0a0a15';
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+  ctx.lineWidth = 1.5;
+  ctx.strokeStyle = '#aa80ff';
+  ctx.beginPath();
+
+  const sliceWidth = canvas.width / bufferLength;
+  let x = 0;
+  for(let i=0;i<bufferLength;i++){
+    const v = dataArray[i] / 128;
+    const y = v * canvas.height / 2;
+    if(i===0) ctx.moveTo(x,y);
+    else ctx.lineTo(x,y);
+    x += sliceWidth;
+  }
+  ctx.stroke();
+
+  requestAnimationFrame(drawWaveform);
+}
+
+function startRecording(){
+  if(!audioCtx) initAudio();
+  const dest = audioCtx.createMediaStreamDestination();
+  masterGain.connect(dest);
+  mediaRecorder = new MediaRecorder(dest.stream);
+  recordedChunks = [];
+  mediaRecorder.ondataavailable = e=>{if(e.data.size>0) recordedChunks.push(e.data);};
+  mediaRecorder.onstop = ()=>{
+    const blob = new Blob(recordedChunks,{type:'audio/webm'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `vox-lithium-${Date.now()}.webm`;
+    a.textContent = 'Download recording';
+    a.style = 'color:#aa80ff;font-size:0.7rem;';
+    document.getElementById('downloadArea').appendChild(a);
+    log('Recording saved.');
+  };
+  mediaRecorder.start();
+  document.getElementById('recStatus').textContent = '● Recording...';
+  document.getElementById('recStatus').style.color = '#ff4444';
+  log('Recording started.');
+}
+
+function stopRecording(){
+  if(mediaRecorder && mediaRecorder.state !== 'inactive'){
+    mediaRecorder.stop();
+    document.getElementById('recStatus').textContent = 'Recording saved. Download below.';
+    document.getElementById('recStatus').style.color = '#00ffaa';
+  }
+}
+
+updateDisplay();
+</script>
+</body>
+</html>

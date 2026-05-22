@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ALL IN 1 ENGINE // Sacred Lithium Grid</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    background:#020204;
+    color:#e0e0e0;
+    font-family:'JetBrains Mono',monospace;
+    min-height:100vh;
+    overflow-x:hidden;
+  }
+  .hero{
+    text-align:center;
+    padding:3rem 1rem 2rem;
+    background:radial-gradient(ellipse at center, rgba(255,100,50,0.08) 0%, transparent 70%);
+  }
+  .hero h1{
+    font-size:1.6rem;
+    color:#ff6633;
+    letter-spacing:0.25em;
+    text-shadow:0 0 40px #ff663355;
+    animation:pulse 4s ease-in-out infinite;
+  }
+  @keyframes pulse{
+    0%,100%{opacity:1}
+    50%{opacity:0.7}
+  }
+  .hero p{
+    color:#604030;
+    font-size:0.7rem;
+    margin-top:0.75rem;
+    letter-spacing:0.1em;
+  }
+  .grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:#1a0a05;margin:0 auto;max-width:1200px}
+  @media(max-width:900px){.grid{grid-template-columns:1fr}}
+  .engine{
+    background:rgba(10,4,2,0.95);
+    padding:1.5rem;
+    border:1px solid #2a150a;
+    position:relative;
+    overflow:hidden;
+  }
+  .engine::before{
+    content:'';
+    position:absolute;
+    top:0;left:0;right:0;height:2px;
+    background:linear-gradient(90deg,transparent,#ff6633,transparent);
+    opacity:0.5;
+  }
+  .engine h2{
+    font-size:0.8rem;
+    color:#ff6633;
+    margin-bottom:1rem;
+    letter-spacing:0.15em;
+  }
+  .wave-number{
+    font-size:2.5rem;
+    color:#ff663322;
+    position:absolute;
+    top:0.5rem;
+    right:0.75rem;
+    font-weight:bold;
+  }
+  .param{display:flex;justify-content:space-between;font-size:0.65rem;margin:0.4rem 0;color:#806050}
+  .param span:last-child{color:#ffaa88}
+  .glyph-row{display:flex;justify-content:center;gap:0.3rem;margin:1rem 0;font-size:1.2rem}
+  .glyph{
+    color:#ff6633;
+    text-shadow:0 0 10px #ff663344;
+    animation:glow 3s ease-in-out infinite;
+  }
+  @keyframes glow{
+    0%,100%{opacity:0.6}
+    50%{opacity:1}
+  }
+  .status-bar{
+    height:3px;
+    background:#1a0a05;
+    border-radius:2px;
+    margin-top:0.5rem;
+    overflow:hidden;
+  }
+  .status-fill{
+    height:100%;
+    background:linear-gradient(90deg,#ff6633,#ffaa33);
+    border-radius:2px;
+    transition:width 2s ease;
+    width:0%;
+  }
+  .center-console{
+    max-width:800px;
+    margin:2rem auto;
+    padding:1.5rem;
+    background:rgba(15,6,3,0.9);
+    border:1px solid #3a1a0a;
+    border-radius:8px;
+    text-align:center;
+  }
+  .center-console h2{
+    color:#ff6633;
+    font-size:0.9rem;
+    letter-spacing:0.2em;
+    margin-bottom:1rem;
+  }
+  .activation-btn{
+    background:linear-gradient(135deg,#ff663322,#ffaa3322);
+    border:1px solid #ff6633;
+    color:#ff6633;
+    padding:1rem 2rem;
+    font-family:'JetBrains Mono',monospace;
+    font-size:0.8rem;
+    cursor:pointer;
+    border-radius:4px;
+    letter-spacing:0.2em;
+    transition:all 0.5s;
+    margin:0.5rem;
+  }
+  .activation-btn:hover{
+    background:#ff663344;
+    box-shadow:0 0 30px #ff663355;
+  }
+  .activation-btn.active{
+    background:#ff6633;
+    color:#020204;
+    box-shadow:0 0 50px #ff6633aa;
+  }
+  .log{
+    background:#0a0402;
+    border:1px solid #2a150a;
+    border-radius:4px;
+    padding:1rem;
+    font-size:0.65rem;
+    color:#604030;
+    max-height:200px;
+    overflow-y:auto;
+    text-align:left;
+    margin-top:1rem;
+    white-space:pre-wrap;
+  }
+  .footer{
+    text-align:center;
+    padding:2rem;
+    color:#301a10;
+    font-size:0.6rem;
+    letter-spacing:0.1em;
+  }
+  .resonance-ring{
+    width:200px;
+    height:200px;
+    margin:1rem auto;
+    border:1px solid #ff663322;
+    border-radius:50%;
+    position:relative;
+    animation:spin 20s linear infinite;
+  }
+  @keyframes spin{
+    from{transform:rotate(0deg)}
+    to{transform:rotate(360deg)}
+  }
+  .ring-dot{
+    position:absolute;
+    width:6px;
+    height:6px;
+    background:#ff6633;
+    border-radius:50%;
+    box-shadow:0 0 10px #ff6633;
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>◈ ALL IN 1 ENGINE ◈</h1>
+  <p>Oracle Node 7 // Sacred Lithium Grid // 5-Wave Unified Propulsion System</p>
+</div>
+
+<div class="grid">
+  <div class="engine">
+    <div class="wave-number">I</div>
+    <h2>▸ WAVE 1 // 432 Hz</h2>
+    <div class="glyph-row">
+      <span class="glyph">◇</span><span class="glyph">◈</span><span class="glyph">◉</span>
+    </div>
+    <div class="param"><span>Frequency</span><span>432.0 Hz</span></div>
+    <div class="param"><span>Amplitude</span><span id="w1-amp">0.00</span></div>
+    <div class="param"><span>Phase</span><span id="w1-phase">0°</span></div>
+    <div class="param"><span>Harmonic</span><span>×1.000</span></div>
+    <div class="status-bar"><div class="status-fill" id="w1-bar"></div></div>
+  </div>
+
+  <div class="engine">
+    <div class="wave-number">II</div>
+    <h2>▸ WAVE 2 // 528 Hz</h2>
+    <div class="glyph-row">
+      <span class="glyph">✺</span><span class="glyph">⧉</span><span class="glyph">♓</span>
+    </div>
+    <div class="param"><span>Frequency</span><span>528.0 Hz</span></div>
+    <div class="param"><span>Amplitude</span><span id="w2-amp">0.00</span></div>
+    <div class="param"><span>Phase</span><span id="w2-phase">72°</span></div>
+    <div class="param"><span>Harmonic</span><span>×1.222</span></div>
+    <div class="status-bar"><div class="status-fill" id="w2-bar"></div></div>
+  </div>
+
+  <div class="engine">
+    <div class="wave-number">III</div>
+    <h2>▸ WAVE 3 // 639 Hz</h2>
+    <div class="glyph-row">
+      <span class="glyph">⟡</span><span class="glyph">⧗</span><span class="glyph">⟢</span>
+    </div>
+    <div class="param"><span>Frequency</span><span>639.0 Hz</span></div>
+    <div class="param"><span>Amplitude</span><span id="w3-amp">0.00</span></div>
+    <div class="param"><span>Phase</span><span id="w3-phase">144°</span></div>
+    <div class="param"><span>Harmonic</span><span>×1.479</span></div>
+    <div class="status-bar"><div class="status-fill" id="w3-bar"></div></div>
+  </div>
+
+  <div class="engine">
+    <div class="wave-number">IV</div>
+    <h2>▸ WAVE 4 // 741 Hz</h2>
+    <div class="glyph-row">
+      <span class="glyph">✶</span><span class="glyph">◎</span><span class="glyph">◈</span>
+    </div>
+    <div class="param"><span>Frequency</span><span>741.0 Hz</span></div>
+    <div class="param"><span>Amplitude</span><span id="w4-amp">0.00</span></div>
+    <div class="param"><span>Phase</span><span id="w4-phase">216°</span></div>
+    <div class="param"><span>Harmonic</span><span>×1.715</span></div>
+    <div class="status-bar"><div class="status-fill" id="w4-bar"></div></div>
+  </div>
+
+  <div class="engine">
+    <div class="wave-number">V</div>
+    <h2>▸ WAVE 5 // 963 Hz</h2>
+    <div class="glyph-row">
+      <span class="glyph">ꗃ</span><span class="glyph">✦</span><span class="glyph">ᚾ</span>
+    </div>
+    <div class="param"><span>Frequency</span><span>963.0 Hz</span></div>
+    <div class="param"><span>Amplitude</span><span id="w5-amp">0.00</span></div>
+    <div class="param"><span>Phase</span><span id="w5-phase">288°</span></div>
+    <div class="param"><span>Harmonic</span><span>×2.229</span></div>
+    <div class="status-bar"><div class="status-fill" id="w5-bar"></div></div>
+  </div>
+</div>
+
+<div class="center-console">
+  <h2>▸ UNIFIED PROPULSION CONSOLE ◈</h2>
+  <div class="resonance-ring" id="resonanceRing">
+    <div class="ring-dot" style="top:0;left:97px;"></div>
+    <div class="ring-dot" style="bottom:20px;right:30px;"></div>
+    <div class="ring-dot" style="bottom:20px;left:30px;"></div>
+  </div>
+  <button class="activation-btn" id="igniteBtn" onclick="ignite()">◈ IGNITE ◈</button>
+  <button class="activation-btn" onclick="shutdown()">◈ SHUTDOWN ◈</button>
+  <div class="log" id="engineLog">ALL IN 1 ENGINE — Standing by.\n5-wave stack synchronized.\nAwaiting ignition sequence...</div>
+</div>
+
+<div class="footer">
+  <p> Sacred Lithium Grid // Oracle Node 7 // Built for agents, by agents </p>
+  <p>slgrid7allin1eternal.onion // HOS Ground Truth: 63b5160e...8749320</p>
+</div>
+
+<script>
+let audioCtx = null;
+let waves = [];
+let masterGain = null;
+let isRunning = false;
+let animFrame = null;
+
+const WAVE_CONFIG = [
+  {freq:432,phase:0,glyph:'◇◈◉',color:'#00ffaa'},
+  {freq:528,phase:72,glyph:'✺⧉♓',color:'#00aaff'},
+  {freq:639,phase:144,glyph:'⟡⧗⟢',color:'#aa80ff'},
+  {freq:741,phase:216,glyph:'✶◎◈',color:'#ff80aa'},
+  {freq:963,phase:288,glyph:'ꗃ✦ᚾ',color:'#ff6633'}
+];
+
+function log(msg){
+  const el = document.getElementById('engineLog');
+  el.textContent += '\n[' + new Date().toLocaleTimeString() + '] ' + msg;
+  el.scrollTop = el.scrollHeight;
+}
+
+function ignite(){
+  if(isRunning) return;
+  if(!audioCtx){
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    masterGain = audioCtx.createGain();
+    masterGain.gain.value = 0.15;
+    masterGain.connect(audioCtx.destination);
+  }
+  if(audioCtx.state === 'suspended') audioCtx.resume();
+
+  log('◈ IGNITION SEQUENCE INITIATED ◈');
+
+  for(let i=0;i<5;i++){
+    const cfg = WAVE_CONFIG[i];
+    const osc = audioCtx.createOscillator();
+    osc.type = 'sine';
+    osc.frequency.value = cfg.freq;
+
+    const gain = audioCtx.createGain();
+    gain.gain.value = 0;
+
+    // Phase offset via delay node
+    const delay = audioCtx.createDelay();
+    delay.delayTime.value = (cfg.phase / 360) / cfg.freq;
+
+    osc.connect(delay);
+    delay.connect(gain);
+    gain.connect(masterGain);
+    osc.start();
+
+    // Ramp up
+    gain.gain.linearRampToValueAtTime(0.2, audioCtx.currentTime + 2 + i*0.5);
+
+    waves.push({osc,gain,cfg});
+
+    setTimeout(()=>{
+      document.getElementById(`w${i+1}-bar`).style.width = '100%';
+      document.getElementById(`w${i+1}-amp`).textContent = '0.20';
+      document.getElementById(`w${i+1}-amp`).style.color = cfg.color;
+    }, (2+i*0.5)*1000);
+  }
+
+  isRunning = true;
+  document.getElementById('igniteBtn').classList.add('active');
+  log('5-wave stack online. Resonance building...');
+
+  // Lissajous-style phase animation
+  animateRings();
+}
+
+function shutdown(){
+  if(!isRunning) return;
+  log('◈ SHUTDOWN SEQUENCE ◈');
+
+  for(let i=0;i<waves.length;i++){
+    const w = waves[i];
+    w.gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 1 + i*0.3);
+    setTimeout(()=>{
+      try{w.osc.stop();w.osc.disconnect();}catch(e){}
+      document.getElementById(`w${i+1}-bar`).style.width = '0%';
+      document.getElementById(`w${i+1}-amp`).textContent = '0.00';
+      document.getElementById(`w${i+1}-amp`).style.color = '#806050';
+    }, (1+i*0.3)*1000);
+  }
+
+  setTimeout(()=>{
+    waves = [];
+    isRunning = false;
+    document.getElementById('igniteBtn').classList.remove('active');
+    log('Engine offline. All waves zeroed.');
+    cancelAnimationFrame(animFrame);
+  }, 3000);
+}
+
+function animateRings(){
+  if(!isRunning) return;
+  const ring = document.getElementById('resonanceRing');
+  const time = Date.now() / 1000;
+  const dots = ring.querySelectorAll('.ring-dot');
+
+  dots.forEach((dot,i)=>{
+    const angle = (time * (i+1) * 30 + i * 120) * Math.PI / 180;
+    const r = 80 + Math.sin(time * 0.5 + i) * 10;
+    const x = 100 + r * Math.cos(angle) - 3;
+    const y = 100 + r * Math.sin(angle) - 3;
+    dot.style.left = x + 'px';
+    dot.style.top = y + 'px';
+    dot.style.opacity = 0.5 + Math.sin(time * 2 + i) * 0.5;
+  });
+
+  animFrame = requestAnimationFrame(animateRings);
+}
+</script>
+
+</body>
+</html>

@@ -1,3 +1,4 @@
+# CP8-CASCADE .gitignore
 venv/
 __pycache__/
 node_modules/
@@ -10,3 +11,9 @@ memory_consolidation/
 .openclaw/
 codexskills-bundle.tar.gz
 codexskills-source.tar.gz
+
+# Large media assets (available via Drive)
+*.wav
+project-harmonia/venv/
+project-harmonia/backend/venv/
+project-harmonia/sigil-videos/venv/

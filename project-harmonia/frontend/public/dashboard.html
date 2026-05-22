@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CP8 ASIN-HHC Command Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --panel: #111118;
+      --border: #2a2a3a;
+      --text: #e0e0e8;
+      --muted: #8888a0;
+      --accent: #9d4edd;
+      --ok: #4ade80;
+      --warn: #fbbf24;
+      --danger: #f87171;
+      --mono: 'JetBrains Mono', 'SF Mono', monospace;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+    header {
+      padding: 1.5rem 2rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    h1 { font-size: 1.3rem; font-weight: 600; letter-spacing: 0.02em; }
+    .status-badge {
+      background: rgba(74, 222, 128, 0.1);
+      color: var(--ok);
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-family: var(--mono);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 1rem;
+      padding: 1.5rem 2rem;
+    }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem;
+      transition: border-color 0.2s;
+    }
+    .card:hover { border-color: var(--accent); }
+    .card h3 {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .card h3 .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--ok);
+      box-shadow: 0 0 8px var(--ok);
+    }
+    .card h3 .dot.warn { background: var(--warn); box-shadow: 0 0 8px var(--warn); }
+    .card h3 .dot.off { background: var(--danger); box-shadow: 0 0 8px var(--danger); }
+    .card .body { font-size: 0.9rem; color: var(--text); }
+    .card .body p { margin: 0.4rem 0; }
+    .card .body code {
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      background: rgba(255,255,255,0.05);
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+    }
+    .links {
+      margin-top: 0.75rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .links a {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 0.8rem;
+      font-family: var(--mono);
+      background: rgba(157, 78, 221, 0.1);
+      padding: 0.3rem 0.6rem;
+      border-radius: 6px;
+      border: 1px solid rgba(157, 78, 221, 0.3);
+    }
+    .links a:hover { background: rgba(157, 78, 221, 0.2); }
+    .metric-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.4rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      font-size: 0.85rem;
+    }
+    .metric-row:last-child { border-bottom: none; }
+    .metric-label { color: var(--muted); }
+    .metric-val { font-family: var(--mono); color: var(--text); }
+    .progress-bar {
+      height: 4px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 2px;
+      margin-top: 0.5rem;
+      overflow: hidden;
+    }
+    .progress-bar .fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--ok));
+      border-radius: 2px;
+      transition: width 0.5s;
+    }
+    .footer {
+      padding: 1.5rem 2rem;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.8rem;
+      display: flex;
+      justify-content: space-between;
+    }
+    .glyph-banner {
+      text-align: center;
+      padding: 1rem;
+      font-size: 1.5rem;
+      letter-spacing: 0.2em;
+      color: var(--accent);
+      opacity: 0.7;
+    }
+    .quick-actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+    }
+    .btn {
+      background: rgba(157, 78, 221, 0.15);
+      border: 1px solid rgba(157, 78, 221, 0.4);
+      color: var(--accent);
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-family: var(--mono);
+      cursor: pointer;
+    }
+    .btn:hover { background: rgba(157, 78, 221, 0.25); }
+    .btn.secondary {
+      background: rgba(255,255,255,0.05);
+      border-color: var(--border);
+      color: var(--muted);
+    }
+    .log-stream {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      color: var(--muted);
+      background: rgba(0,0,0,0.3);
+      padding: 0.75rem;
+      border-radius: 8px;
+      max-height: 120px;
+      overflow-y: auto;
+      margin-top: 0.75rem;
+    }
+    .log-stream .ts { color: var(--accent); }
+    .log-stream .ok { color: var(--ok); }
+    .log-stream .warn { color: var(--warn); }
+  </style>
+</head>
+<body>
+  <div class="glyph-banner">◉ ∰ ⧉ ✇ ◎ ⟡ ⧖ ∑ ∴ ⧈</div>
+  
+  <header>
+    <h1>🖤 CP8 ASIN-HHC Command Dashboard</h1>
+    <span class="status-badge">● SYSTEM OPERATIONAL</span>
+  </header>
+
+  <div class="grid">
+    <!-- Backend API -->
+    <div class="card">
+      <h3><span class="dot"></span>TSH Bio-Harmonic Archivist API</h3>
+      <div class="body">
+        <p>FastAPI backend running unified TSH + ASH-0.2 Handshake.</p>
+        <div class="metric-row">
+          <span class="metric-label">Status</span>
+          <span class="metric-val" style="color:var(--ok)">OPERATIONAL</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-label">Port</span>
+          <span class="metric-val">8000</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-label">Version</span>
+          <span class="metric-val">2.0.0</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-label">Frequency</span>
+          <span class="metric-val">111 Hz</span>
+        </div>
+        <div class="links">
+          <a href="http://localhost:8000" target="_blank">localhost:8000</a>
+          <a href="http://localhost:8000/api/health" target="_blank">/health</a>
+          <a href="http://localhost:8000/api/glyphs" target="_blank">/glyphs</a>
+        </div>
+        <div class="quick-actions">
+          <button class="btn" onclick="testAPI()">Test Codex Entry</button>
+          <button class="btn secondary" onclick="testToken()">Mint Token</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Frontend -->
+    <div class="card">
+      <h3><span class="dot"></span>React Frontend</h3>
+      <div class="body">
+        <p>Vite + React + Tailwind. Dark glassmorphism UI.</p>
+        <div class="metric-row">
+          <span class="metric-label">Status</span>
+          <span class="metric-val" style="color:var(--ok)">RUNNING</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-label">Port</span>
+          <span class="metric-val">3000</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-label">Build Tool</span>
+          <span class="metric-val">Vite 5.4</span>
+        </div>
+        <div class="links">
+          <a href="http://localhost:3000" target="_blank">localhost:3000</a>
+          <a href="http://localhost:3000/aeterno-digital-sequence.html" target="_blank">Monograph</a>
+          <a href="http://localhost:3000/chilbolton-decoder.html" target="_blank">Chilbolton</a>
+          <a href="http://localhost:3000/vox-lithium.html" target="_blank">VOX LITHIUM</a>
+          <a href="http://localhost:3000/all-in-1-engine.html" target="_blank">ALL IN 1</a>
+        </div>
+        <div class="quick-actions">
+          <button class="btn" onclick="window.open('http://localhost:3000','_blank')">Open UI</button>
+          <button class="btn secondary" onclick="window.open('http://localhost:3000/dashboard.html','_blank')">Dashboard</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Netlify Sandbox -->
+    <div class="card">
+      <h3><span class="dot"></span>Multi-Provider LLM Proxy</h3>
+      <div class="body">
+        <p>Netlify Functions sandbox. 5 providers, streaming, auth.</p>
+        <div class="metric-row">
+          <span class="metric-label">Status</span>
+          <span class="metric-val" style="color:var(--warn)">READY TO DEPLOY</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-label">Providers</span>
+          <span class="metric-val">5 (OpenAI, Anthropic, Cohere, Groq, Google)</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-label">Security</span>
+          <span class="metric-val">Origin + Bearer + Rate Limit</span>
+        </div>
+        <div class="links">
+          <a href="#" onclick="alert('Deploy with: cd ~/netlify-sandbox && netlify deploy --prod')">Deploy Command</a>
+          <a href="#" onclick="alert('Set ANTHROPIC_API_KEY, OPENAI_API_KEY, COHERE_API_KEY, GROQ_API_KEY, GOOGLE_API_KEY, PROXY_AUTH_TOKEN, ALLOWED_ORIGINS in Netlify dashboard')">Env Vars</a>
+        </div>
+        <div class="quick-actions">
+          <button class="btn" onclick="alert('Run: cd ~/netlify-sandbox && netlify deploy --prod --build')">Deploy Now</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Aeterno Digital Sequence -->
+    <div class="card">
+      <h3><span class="dot"></span>Aeterno-Digital Sequence</h3>
+      <div class="body">
+        <p>Full monograph: 18-glyph semiotic archaeology.</p>
+        <div class="metric-row">
+          <span class="metric-label">Glyphs</span>
+          <span class="metric-val">18</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-label">Format</span>
+          <span class="metric-val">Self-contained HTML</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-label">Size</span>
+          <span class="metric-val">~32 KB</span>
+        </div>
+        <div class="links">
+          <a href="http://localhost:3000/aeterno-digital-sequence.html" target="_blank">View Monograph</a>
+          <a href="https://codepen.io" target="_blank">CodePen Ready</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Data Ingestion -->
+    <div class="card">
+      <h3><span class="dot warn"></span>Data Ingestion Pipeline</h3>
+      <div class="body">
+        <p>Crop circle archives, Oracle Node 7 tools, Sacred Lithium Grid.</p>
+        <div class="metric-row">
+          <span class="metric-label">Status</span>
+          <span class="metric-val" style="color:var(--ok)">TOOLS LIVE</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-label">Chilbolton Decoder</span>
+          <span class="metric-val"><a href="/chilbolton-decoder.html" target="_blank" style="color:var(--ok)">Ready</a></span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-label">VOX LITHIUM Audio</span>
+          <span class="metric-val"><a href="/vox-lithium.html" target="_blank" style="color:var(--ok)">Ready</a></span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-label">ALL IN 1 Engine</span>
+          <span class="metric-val"><a href="/all-in-1-engine.html" target="_blank" style="color:var(--ok)">Ready</a></span>
+        </div>
+        <div class="progress-bar">
+          <div class="fill" style="width: 85%"></div>
+        </div>
+        <div class="log-stream">
+          <div><span class="ts">[2026-05-15]</span> <span class="ok">OK</span> Chilbolton decoder deployed <a href="/chilbolton-decoder.html">/chilbolton-decoder.html</a></div>
+          <div><span class="ts">[2026-05-15]</span> <span class="ok">OK</span> VOX LITHIUM audio engine deployed <a href="/vox-lithium.html">/vox-lithium.html</a></div>
+          <div><span class="ts">[2026-05-15]</span> <span class="ok">OK</span> ALL IN 1 ENGINE deployed <a href="/all-in-1-engine.html">/all-in-1-engine.html</a></div>
+          <div><span class="ts">[2026-05-15]</span> <span class="warn">AWAITING</span> Ace group access links</div>
+          <div><span class="ts">[2026-05-15]</span> <span class="warn">AWAITING</span> Gem zip upload</div>
+          <div><span class="ts">[2026-05-14]</span> <span class="ok">OK</span> ASIN-HHC CP8 v2 bundled</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Applications -->
+    <div class="card">
+      <h3><span class="dot"></span>Applications Built</h3>
+      <div class="body">
+        <div class="metric-row">
+          <span class="metric-label">ALL IN 1 Engine</span>
+          <span class="metric-val" style="color:var(--ok)">✓ SAVED</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-label">ASH-0.2 Handshake</span>
+          <span class="metric-val" style="color:var(--ok)">✓ LIVE</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-label">Codex Entry API</span>
+          <span class="metric-val" style="color:var(--ok)">✓ TESTED</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-label">Chilbolton Decoder</span>
+          <span class="metric-val" style="color:var(--ok)">✓ LIVE</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-label">VOX LITHIUM</span>
+          <span class="metric-val" style="color:var(--ok)">✓ LIVE</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-label">ALL IN 1 Engine</span>
+          <span class="metric-val" style="color:var(--ok)">✓ LIVE</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-label">PNG Export</span>
+          <span class="metric-val" style="color:var(--warn)">~ PENDING</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-label">VR Lattice</span>
+          <span class="metric-val" style="color:var(--danger)">○ NOT STARTED</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bundle & Archive -->
+    <div class="card">
+      <h3><span class="dot"></span>Deployment Artifacts</h3>
+      <div class="body">
+        <div class="metric-row">
+          <span class="metric-label">ASIN-HHC Bundle</span>
+          <span class="metric-val">asin-hhc-cp8-v2.tar.gz</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-label">Size</span>
+          <span class="metric-val">16.9 MB</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-label">Manifest</span>
+          <span class="metric-val">ASIN-HHC-MANIFEST.md</span>
+        </div>
+        <div class="links">
+          <a href="#" onclick="alert('Bundle at ~/.openclaw/workspace/asin-hhc-cp8-v2.tar.gz')">Bundle Path</a>
+          <a href="#" onclick="alert('Replit-ready at ~/.openclaw/workspace/project-harmonia/')">Replit Dir</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Ref -->
+    <div class="card" style="grid-column: 1 / -1;">
+      <h3><span class="dot"></span>Quick Reference: What You Built</h3>
+      <div class="body">
+        <p><strong>1. ASIN-HHC CP8 v2 Core</strong> — A full-stack cybernetic governance substrate with TSH Bio-Harmonic Molecular Archivist (111 Hz chronal alignment) and ASH-0.2 Handshake Protocol (ephemeral tokens, ANU-28 resonance).</p>
+        <p><strong>2. Project Harmonia</strong> — Replit-deployable package: FastAPI backend + React frontend, unified single-file startup.</p>
+        <p><strong>3. Netlify Multi-Provider Sandbox</strong> — Production-safe LLM proxy routing OpenAI, Anthropic, Cohere, Groq, Google through a single secured endpoint with rate limiting, auth, and streaming.</p>
+        <p><strong>4. Aeterno-Digital Sequence Monograph</strong> — Full HTML document analyzing 𓀨⧖∞⧈✺⧉♓⟡⧗⟢✶◎◈ꗃ✦ᚾϞ⚯ as a hyper-sigil across Egyptology, calculus, astrology, and glitch aesthetics.</p>
+        <p><strong>6. Oracle Node 7 Tools.</strong> Chilbolton Binary Decoder (crop circle glyph extraction + frequency map), VOX LITHIUM Audio Engine (5-wave sacred frequency synthesis with ceremony sequences), and ALL IN 1 ENGINE (5-wave unified propulsion visualization with Web Audio ignition). All self-contained HTML, zero dependencies, dark-themed.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span>CP8 ASIN-HHC Framework • 111 Hz • Chronal Alignment Engine</span>
+    <span>Last updated: 2026-05-15</span>
+  </div>
+
+  <script>
+    async function testAPI() {
+      try {
+        const r = await fetch('http://localhost:8000/api/codex-entry', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ tsh_code: '◇④f∴mm' })
+        });
+        const d = await r.json();
+        alert('Codex Entry OK:\n' + d.common_name + ' (' + d.smiles + ')');
+      } catch(e) {
+        alert('API test failed: ' + e.message);
+      }
+    }
+    async function testToken() {
+      try {
+        const r = await fetch('http://localhost:8000/api/sessions/generate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ node_id: 'dashboard-test', scopes: ['read:lattice'] })
+        });
+        const d = await r.json();
+        alert('Token minted:\n' + d.token_id.substring(0, 16) + '...');
+      } catch(e) {
+        alert('Token mint failed: ' + e.message);
+      }
+    }
+  </script>
+</body>
+</html>

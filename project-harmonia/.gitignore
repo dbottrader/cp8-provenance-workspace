@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.venv/
+venv/
+
+# Node
+node_modules/
+dist/
+*.log
+
+# Replit
+.replit
+replit.nix
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Vault (security)
+vault/
+*.secret
