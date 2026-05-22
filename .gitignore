@@ -1,0 +1,12 @@
+venv/
+__pycache__/
+node_modules/
+*.pyc
+.DS_Store
+diary/
+downloads/
+memory_consolidation/
+.clawhub/
+.openclaw/
+codexskills-bundle.tar.gz
+codexskills-source.tar.gz

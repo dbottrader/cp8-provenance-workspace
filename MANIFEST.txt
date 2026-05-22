@@ -1,0 +1,30 @@
+CP8-CASCADE WORKSPACE EXPORT
+==============================
+Date: 2026-05-23
+Source: /root/.openclaw/workspace
+
+FILES
+-----
+codexskills-bundle.tar.gz   (375MB) — Full workspace including media assets
+  - project-harmonia/       ANU-28 Codex + HMN Social Network (backend, frontend, 3D, videos, soundscapes)
+  - ecosystem/              ASIN-HHC CP8 lattice framework + github-genome scaffold
+  - deliverables/           Drive connector, HMN dashboard, CP8-CP9 bridge, metadata pipeline
+  - skills/                 Custom OpenClaw skills
+  - Config files            SOUL.md, USER.md, AGENTS.md, TOOLS.md, IDENTITY.md, MANIFEST.md
+
+codexskills-source.tar.gz    (961KB) — Lean source only (no media assets)
+  Same structure as above but excludes:
+    3d-codex/, sigil-videos/, soundscapes/, printable-codex/, crop-circle-decodes/
+
+GITHUB TARGET
+-------------
+Repo: dbottrader/codexskills
+Branch: cp8-cascade
+
+ACTION NEEDED
+-------------
+1. Download codexskills-source.tar.gz (or bundle)
+2. Extract and push to GitHub via Grok or manual git push
+3. git remote add origin https://github.com/dbottrader/codexskills.git
+4. git push -u origin cp8-cascade
+

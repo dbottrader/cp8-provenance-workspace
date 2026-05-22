@@ -1,0 +1,16 @@
+{
+  "name": "sacred-lithium-grid",
+  "version": "1.0.0",
+  "description": "Sacred Lithium Grid - Multi-Provider AI Proxy + ALL IN 1 ENGINE",
+  "main": "proxy.js",
+  "scripts": {
+    "test": "echo \"No tests yet\" \u0026\u0026 exit 0"
+  },
+  "dependencies": {
+    "jsonwebtoken": "^9.0.2",
+    "@supabase/supabase-js": "^2.45.0"
+  },
+  "engines": {
+    "node": "\u003e=18"
+  }
+}

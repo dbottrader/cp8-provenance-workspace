@@ -1,0 +1,12 @@
+[build]
+  command = "npm install"
+  functions = "functions"
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/api/:splat"
+  status = 200
+
+[context.production.environment]
+  JWT_SECRET = "your_jwt_secret_here"
+  JWT_REFRESH_SECRET = "your_refresh_secret_here"
