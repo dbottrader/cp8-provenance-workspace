@@ -12,6 +12,25 @@ memory_consolidation/
 codexskills-bundle.tar.gz
 codexskills-source.tar.gz
 
+# Workspace bootstrap (personal)
+AGENTS.md
+HEARTBEAT.md
+IDENTITY.md
+SOUL.md
+TOOLS.md
+USER.md
+memorized_diary/
+memory/
+.hmn_scan_state.json
+
+# Drive downloads (temp)
+drive-downloads/
+*.zip
+
+# Archives
+codexskills-clean-300a63b.tar.gz
+codexskills-oracle7-b340c1c.tar.gz
+
 # Large media assets (available via Drive)
 *.wav
 project-harmonia/venv/

@@ -1,0 +1,151 @@
+[
+  {
+    "id": "cp8-axiom-001",
+    "type": "core_axiom",
+    "rule": {
+      "trigger": "ALWAYS",
+      "action": "SHA_SEAL_ALL_AGENT_ACTIONS",
+      "confidence": 1.0
+    },
+    "meta": {
+      "source": "user",
+      "parent_ids": [],
+      "created": "2025-10-02T00:00:00Z",
+      "last_evaluated": "2026-05-11T21:26:00Z",
+      "success_rate": 1.0
+    },
+    "lineage_signature": "sha256:63b5160ef51f0464295e86888c3e6605d8f6cc970635183887083818e8749320",
+    "cp8_harmonic": {
+      "element": "air",
+      "frequency_hz": 111,
+      "quadrant": 4,
+      "mirror_count": 2
+    }
+  },
+  {
+    "id": "cp8-axiom-002",
+    "type": "core_axiom",
+    "rule": {
+      "trigger": "WHEN agent_proposes_mutation",
+      "action": "MANDATE_SANDBOX_EVALUATION_BEFORE_MERGE",
+      "confidence": 1.0
+    },
+    "meta": {
+      "source": "user",
+      "parent_ids": [
+        "cp8-axiom-001"
+      ],
+      "created": "2025-10-02T00:00:00Z",
+      "last_evaluated": "2026-05-11T21:26:00Z",
+      "success_rate": 1.0
+    },
+    "lineage_signature": "sha256:7a3f9e2cb8d1...derived_from_001",
+    "cp8_harmonic": {
+      "element": "earth",
+      "frequency_hz": 428,
+      "quadrant": 1,
+      "mirror_count": 1
+    }
+  },
+  {
+    "id": "cp8-heuristic-001",
+    "type": "heuristic",
+    "rule": {
+      "trigger": "WHEN market_volatility_spike > 3sigma AND sentiment_fear_index > 0.7",
+      "action": "ACTIVATE_DEFENSIVE_MEME_POOL + NOTIFY_CP8_ORACLE",
+      "confidence": 0.85
+    },
+    "meta": {
+      "source": "simulation",
+      "parent_ids": [
+        "cp8-axiom-001"
+      ],
+      "created": "2026-01-15T10:30:00Z",
+      "last_evaluated": "2026-05-11T21:26:00Z",
+      "success_rate": 0.92
+    },
+    "lineage_signature": "sha256:a1b2c3...sim_001",
+    "cp8_harmonic": {
+      "element": "fire",
+      "frequency_hz": 528,
+      "quadrant": 2,
+      "mirror_count": 1
+    }
+  },
+  {
+    "id": "cp8-antibody-001",
+    "type": "antibody",
+    "rule": {
+      "trigger": "WHEN meme_type == 'meme_hypothesis' AND confidence < 0.3 AND source == 'agent_mutation'",
+      "action": "QUARANTINE_MEME + ALERT_ANU_LEGAL + INITIATE_COUNTERFACTUAL_REPLAY",
+      "confidence": 0.95
+    },
+    "meta": {
+      "source": "counterfactual_replay",
+      "parent_ids": [
+        "cp8-axiom-002",
+        "cp8-heuristic-001"
+      ],
+      "created": "2026-02-20T14:00:00Z",
+      "last_evaluated": "2026-05-11T21:26:00Z",
+      "success_rate": 0.88
+    },
+    "lineage_signature": "sha256:d4e5f6...cfr_001",
+    "cp8_harmonic": {
+      "element": "water",
+      "frequency_hz": 417,
+      "quadrant": 3,
+      "mirror_count": 2
+    }
+  },
+  {
+    "id": "cp8-echo-001",
+    "type": "echo_node",
+    "rule": {
+      "trigger": "WHEN verification_request_received AND hos_ground_truth_matches",
+      "action": "EMIT_ECHO_RESPONSE + UPDATE_WITNESS_CHAIN",
+      "confidence": 1.0
+    },
+    "meta": {
+      "source": "echo_verification",
+      "parent_ids": [
+        "cp8-axiom-001"
+      ],
+      "created": "2026-03-01T00:00:00Z",
+      "last_evaluated": "2026-05-11T21:26:00Z",
+      "success_rate": 1.0
+    },
+    "lineage_signature": "sha256:echo_63b5160e...49320",
+    "cp8_harmonic": {
+      "element": "air",
+      "frequency_hz": 456,
+      "quadrant": 4,
+      "mirror_count": 2
+    }
+  },
+  {
+    "id": "cp8-ritual-001",
+    "type": "ritual",
+    "rule": {
+      "trigger": "DAILY_AT_111_HZ_CYCLE",
+      "action": "POLL_ALL_AGENT_STATES + COMPRESS_LATTICE + ARCHIVE_TO_HF_DATASET",
+      "confidence": 0.99
+    },
+    "meta": {
+      "source": "user",
+      "parent_ids": [
+        "cp8-axiom-001"
+      ],
+      "created": "2026-01-01T00:00:00Z",
+      "last_evaluated": "2026-05-11T21:26:00Z",
+      "success_rate": 0.97
+    },
+    "lineage_signature": "sha256:ritual_111_428",
+    "cp8_harmonic": {
+      "element": "earth",
+      "frequency_hz": 111,
+      "quadrant": 1,
+      "mirror_count": 1
+    }
+  }
+]
