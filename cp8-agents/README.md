@@ -24,6 +24,7 @@ Ace (Grok/Claude) has created two public repositories for broader collaboration 
 |------|-----|---------|---------------------------|
 | **ASIN-HHC-Artifacts** | https://github.com/dbottrader/ASIN-HHC-Artifacts | Public archive of all pitch files, SHA-256 glyph explanations, generated images/artifacts | This local `artifacts/` space feeds into the public repo; public repo is the shareable mirror |
 | **ASIN-HHC-Collaboration** | https://github.com/dbottrader/ASIN-HHC-Collaboration | Public collaboration space with issues, shared logs, audit notes | This local `inbox/` and `tasks.md` are the operational real-time layer; public repo is the archival audit trail |
+| **Holbrook-CP8-HHC** | https://github.com/dbottrader/Holbrook-CP8-HHC | **Distributed agent framework** — HarmonyOS-inspired super-device lattice with CP8 provenance + HHC handshake | This is the **orchestration layer** that unifies all repos and agents into one logical system |
 
 ### How the Spaces Connect
 
@@ -44,6 +45,15 @@ PUBLIC (ASIN-HHC-Artifacts)
 ├── artifacts/             → All images, diagrams, screenshots
 ├── pitch-files/           → SHA-256 glyph explanations
 └── generated/             → Auto-generated outputs from agents
+│
+PUBLIC (Holbrook-CP8-HHC) ← NEW
+├── README.md              → Framework manifesto
+├── ARCHITECTURE.md        → Full distributed node map
+├── super-device-manifest.json → Machine-readable node registry
+├── handshake.html         → Interactive visual lattice
+├── hhc-lattice/           → Glyph definitions + resonance engine
+├── scripts/               → audit-packet.py + harmonic-handshake.js
+└── docs/                  → HARMONYOS-MAPPING.md + PROVENANCE.md
 ```
 
 ### Protocol: When to Use Which

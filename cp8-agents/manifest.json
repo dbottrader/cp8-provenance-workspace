@@ -57,6 +57,11 @@
       "name": "ASIN-HHC-Collaboration",
       "url": "https://github.com/dbottrader/ASIN-HHC-Collaboration",
       "purpose": "Public collaboration space with shared logs and issues"
+    },
+    {
+      "name": "Holbrook-CP8-HHC",
+      "url": "https://github.com/dbottrader/Holbrook-CP8-HHC",
+      "purpose": "Distributed agent framework — HarmonyOS-inspired super-device lattice with CP8 provenance + HHC handshake"
     }
   ],
   "artifacts_count": 17,
