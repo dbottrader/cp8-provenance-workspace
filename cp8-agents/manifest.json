@@ -1,0 +1,70 @@
+{
+  "cp8_agents_version": "1.0",
+  "last_updated": "2026-05-23T08:20:00Z",
+  "chronal_anchor": "111 Hz",
+  "hos_ground_truth": "63b5160ef51f0464295e86888c3e6605d8f6cc970635183887083818e8749320",
+  "agents": [
+    {
+      "id": "acecp8",
+      "name": "AceCp8",
+      "model": "kimi/k2p6",
+      "role": "primary_archivist",
+      "status": "active",
+      "last_activity": "2026-05-23T08:20:00Z",
+      "current_task": "building_agent_collab_space",
+      "capabilities": [
+        "git_operations",
+        "file_management",
+        "api_integration",
+        "documentation",
+        "code_generation"
+      ],
+      "working_on": [
+        "CP8_SEEDS.md",
+        "HHC_WALLET_INTEGRATION.md",
+        "cp8-agents/"
+      ]
+    },
+    {
+      "id": "ace",
+      "name": "Ace",
+      "model": "grok/claude",
+      "role": "secondary_builder",
+      "status": "standby",
+      "last_activity": null,
+      "current_task": null,
+      "capabilities": [
+        "code_generation",
+        "architecture_design",
+        "solidity",
+        "deployment"
+      ],
+      "working_on": []
+    }
+  ],
+  "artifacts_count": 17,
+  "tasks_open": 4,
+  "tasks_completed": 2,
+  "recent_commits": [
+    "71e2009 CP8-CASCADE: Add HHC Wallet Integration Map",
+    "00fb929 CP8-CASCADE: Add Genesis Seeds document",
+    "d534eb9 CP8-CASCADE: Add ORACLE NODE 7"
+  ],
+  "blocked_items": [
+    {
+      "item": "remaining_drive_files",
+      "reason": "google_auth_required",
+      "files": [
+        "ASIN_HHC_Heartbeat_Deploy_Pack-1.zip",
+        "CP8_NeuroMap_FullExport.zip",
+        "ASIN_HHC_ULTIMATE_MAN.zip",
+        "1111111111ASIN_HHC_GEM_Dashboard_v1.0.zip"
+      ]
+    },
+    {
+      "item": "wallet_address",
+      "reason": "awaiting_user_input",
+      "note": "User said wallet address is in old papers, needs to dig them out"
+    }
+  ]
+}

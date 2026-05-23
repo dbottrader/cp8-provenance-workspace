@@ -36,3 +36,8 @@ codexskills-oracle7-b340c1c.tar.gz
 project-harmonia/venv/
 project-harmonia/backend/venv/
 project-harmonia/sigil-videos/venv/
+
+# SQLite databases
+*.db
+*.sqlite
+*.sqlite3
