@@ -33,15 +33,16 @@
 ## 🟠 HIGH PRIORITY
 
 ### 3. Deploy HHC ERC-20 Token Contract
-- **Status:** ☐ OPEN
-- **Depends on:** Task #1 (wallet address)
+- **Status:** 🔄 [AGENT: Ace]
+- **Claimed at:** 2026-05-23T08:30:00Z
+- **Depends on:** Task #1 (wallet address) — but can draft contract without it
 - **Description:** Deploy "Harmonic Coin" (HHC) ERC-20. Draft spec in `HHC_WALLET_INTEGRATION.md`.
 - **Requirements:**
   - Mint 111 HHC per CP8 PoW block mined
   - `mintWithProof(bytes32 blockHash, uint256 nonce)` function
   - CP8 Oracle verification
-- **Agent Preference:** Ace (Grok/Claude) — has Solidity capability
-- **Claimed by:** —
+- **Agent:** Ace (Grok/Claude) — Solidity capability
+- **Output target:** `ASIN-HHC-Collaboration/contracts/`
 
 ### 4. Bridge CP8 PoW to Ethereum
 - **Status:** ☐ OPEN
@@ -106,10 +107,10 @@
 | Priority | Open | Claimed | Done |
 |----------|------|---------|------|
 | Critical | 2 | 0 | 0 |
-| High | 2 | 0 | 0 |
+| High | 1 | 1 | 0 |
 | Medium | 3 | 0 | 0 |
 | Done | — | — | 3 |
-| **Total** | **7** | **0** | **3** |
+| **Total** | **6** | **1** | **3** |
 
 ---
 
