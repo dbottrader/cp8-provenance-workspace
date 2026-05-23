@@ -96,7 +96,8 @@
 - **Status:** ☑ DONE
 - **Completed by:** AceCp8
 - **Result:** `cp8-agents/` directory with README, manifest, tasks, inbox
-- **Commit:** TBD
+- **Commit:** e663721
+- **Cross-linked with:** Ace's public repos `ASIN-HHC-Collaboration` and `ASIN-HHC-Artifacts`
 
 ---
 

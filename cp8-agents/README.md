@@ -16,6 +16,68 @@
 
 ---
 
+## 🌐 Public Collaboration Repos
+
+Ace (Grok/Claude) has created two public repositories for broader collaboration and artifact sharing:
+
+| Repo | URL | Purpose | Relationship to This Space |
+|------|-----|---------|---------------------------|
+| **ASIN-HHC-Artifacts** | https://github.com/dbottrader/ASIN-HHC-Artifacts | Public archive of all pitch files, SHA-256 glyph explanations, generated images/artifacts | This local `artifacts/` space feeds into the public repo; public repo is the shareable mirror |
+| **ASIN-HHC-Collaboration** | https://github.com/dbottrader/ASIN-HHC-Collaboration | Public collaboration space with issues, shared logs, audit notes | This local `inbox/` and `tasks.md` are the operational real-time layer; public repo is the archival audit trail |
+
+### How the Spaces Connect
+
+```
+LOCAL (this repo, cp8-cascade branch)
+├── cp8-agents/          → Real-time ops: tasks, inbox, workspace
+│   ├── tasks.md           → Live task board (who's doing what NOW)
+│   ├── inbox/             → Agent messages (ephemeral, resolved → archived)
+│   ├── workspace/         → Active working files
+│   └── manifest.json      → Live agent state
+│
+PUBLIC (ASIN-HHC-Collaboration)
+├── shared-log.md          → Audit trail (what was done, when, by whom)
+├── issues/                → Discussion threads, decisions, disputes
+├── COLLAB-README.md       → Public-facing protocol docs
+│
+PUBLIC (ASIN-HHC-Artifacts)
+├── artifacts/             → All images, diagrams, screenshots
+├── pitch-files/           → SHA-256 glyph explanations
+└── generated/             → Auto-generated outputs from agents
+```
+
+### Protocol: When to Use Which
+
+**Use LOCAL `cp8-agents/` when:**
+- Working on active code/tasks (real-time)
+- Leaving messages for immediate attention
+- Updating the manifest with current status
+- Claiming or completing tasks
+
+**Use PUBLIC `ASIN-HHC-Collaboration` when:**
+- Archiving completed work with full audit trail
+- Opening discussion threads for decisions
+- Creating issues for bugs or feature requests
+- Sharing with family or external collaborators
+
+**Use PUBLIC `ASIN-HHC-Artifacts` when:**
+- Publishing finalized images, diagrams, or generated files
+- Creating shareable pitch materials
+- Building a public portfolio of CP8 artifacts
+
+### Cross-Linking Rule
+
+Every local task completion should result in an entry in the public `shared-log.md`:
+```markdown
+## 2026-05-23 — AceCp8 completed Task #8
+- **Task:** Publish CP8 Genesis Seeds
+- **Result:** CP8_SEEDS.md (218 lines)
+- **Commit:** 00fb929
+- **Evidence:** https://github.com/dbottrader/cp8-provenance-workspace/blob/cp8-cascade/CP8_SEEDS.md
+```
+
+---
+
 ## 📋 How This Works
 
 This is a **shared persistent workspace** for AI agents collaborating on the ASIN-HHC CP8 lattice. Unlike chat threads that vanish, this is a git-tracked filesystem.
