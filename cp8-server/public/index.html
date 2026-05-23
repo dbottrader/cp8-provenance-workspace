@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CP8 Supreme OS v4.2 — LIVE</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a0f;color:#e0e0e0;font-family:'Courier New',monospace;font-size:13px;height:100vh;display:flex;flex-direction:column;overflow:hidden}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:#000}
+::-webkit-scrollbar-thumb{background:#00ccff33;border-radius:3px}
+
+/* Header */
+header{display:flex;justify-content:space-between;align-items:center;padding:10px 20px;border-bottom:1px solid #00ccff33;flex-shrink:0;background:#0d0d1a}
+header h1{font-size:1.1rem;background:linear-gradient(90deg,#00ccff,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin:0}
+header .subtitle{font-size:.55rem;color:#00ccff66;letter-spacing:.15em}
+.status-badges{display:flex;gap:8px}
+.badge{padding:3px 10px;border-radius:12px;font-size:.65rem;border:1px solid}
+.badge-cyan{color:#00ccff;background:#00ccff11;border-color:#00ccff33}
+.badge-purple{color:#a855f7;background:#a855f711;border-color:#a855f733}
+.badge-green{color:#00ff9d;background:#00ff9d11;border-color:#00ff9d33}
+
+/* Layout */
+.main{flex:1;display:flex;overflow:hidden}
+
+/* Sidebar */
+.sidebar{width:200px;border-right:1px solid #00ccff22;padding:12px;flex-shrink:0;display:flex;flex-direction:column;background:#0d0d1a}
+.sidebar .label{font-size:.55rem;color:#00ccff44;text-transform:uppercase;letter-spacing:.15em;margin-bottom:8px}
+.nav-btn{display:block;width:100%;text-align:left;padding:8px 10px;border-radius:6px;border:none;background:transparent;color:#888;cursor:pointer;font-family:inherit;font-size:.8rem;margin-bottom:3px;transition:.2s;border-left:2px solid transparent}
+.nav-btn:hover{background:#00ccff0d;color:#ccc}
+.nav-btn.active{background:#00ccff15;color:#00ccff;border-left-color:#00ccff}
+
+/* Content */
+.content{flex:1;display:flex;flex-direction:column;overflow:hidden}
+
+/* Panels (views) */
+.panel{flex:1;overflow:auto;padding:12px;display:none}
+.panel.active{display:block}
+
+/* Terminal */
+.terminal{background:#000;border:1px solid #00ff9d55;border-radius:8;padding:12px;flex:1;overflow-y:auto;font-size:.8rem;line-height:1.6}
+.terminal .line{margin-bottom:3px;white-space:pre-wrap;word-break:break-word}
+.terminal .time{color:#555;font-size:.7rem;margin-right:6px}
+.terminal .type-system{color:#00ccff}
+.terminal .type-block{color:#ffd700}
+.terminal .type-agent{color:#a855f7}
+.terminal .type-hmn{color:#ff8c00}
+.terminal .type-security{color:#ff4444}
+.terminal .type-insight{color:#00ff9d;font-weight:bold}
+.terminal .type-user{color:#fff}
+.terminal .type-error{color:#ff4444}
+.terminal-input-area{display:flex;align-items:center;padding:8px 12px;border-top:1px solid #00ff9d33;background:#000}
+.terminal-input-area .prompt{color:#00ccff;font-weight:bold;margin-right:8px;white-space:nowrap}
+.terminal-input-area input{flex:1;background:transparent;border:none;outline:none;color:#00ff9d;font-family:inherit;font-size:.8rem}
+
+/* Dashboard grid */
+.dash-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-bottom:12px}
+.dash-card{background:#121218;border:1px solid #00ccff22;border-radius:10;padding:14px}
+.dash-card h3{font-size:.7rem;color:#00ccff44;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.dash-value{font-size:1.8rem;font-weight:bold;color:#00ccff}
+.dash-sub{font-size:.65rem;color:#888;margin-top:4px}
+
+/* Blockchain */
+.block-list{font-size:.75rem}
+.block-entry{padding:8px;margin-bottom:6px;background:#121218;border:1px solid #00ccff22;border-radius:8}
+.block-entry .hash{color:#ffd700;font-family:monospace}
+.block-entry .meta{color:#888;font-size:.65rem;margin-top:3px}
+
+/* HMN Posts */
+.post{background:#121218;border:1px solid #ff8c0022;border-radius:10;padding:14px;margin-bottom:10px}
+.post h4{color:#ff8c00;margin-bottom:6px;font-size:.9rem}
+.post .author{color:#00ccff;font-size:.75rem}
+.post .content{color:#ccc;font-size:.8rem;margin:8px 0;line-height:1.5}
+.comment{margin:6px 0 6px 20px;padding:8px;border-left:2px solid #00ccff33;background:#0d0d1a;border-radius:0 6px 6px 0}
+.comment .author{color:#a855f7;font-size:.75rem}
+.comment .text{color:#bbb;font-size:.75rem}
+
+/* Glyph grid */
+.glyph-section{margin-bottom:14px;padding:14px;background:#121218;border:1px solid #00ccff22;border-radius:10}
+.glyph-section h3{color:#00ccff;font-size:.9rem;margin-bottom:10px}
+.glyph-grid{display:flex;flex-wrap:wrap;gap:8px}
+.glyph-btn{width:48px;height:48px;border-radius:50%;border:1px solid #00ccff22;background:#00ccff08;color:#fff;font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.2s;position:relative}
+.glyph-btn:hover{border-color:#00ccff66;background:#00ccff15}
+.glyph-btn.active{border:2px solid #a855f7;background:#a855f722;box-shadow:0 0 10px #a855f744}
+.glyph-btn .tooltip{position:absolute;bottom:55px;left:50%;transform:translateX(-50%);background:#0a0a0f;border:1px solid #00ccff33;padding:4px 8px;border-radius:6px;font-size:.6rem;white-space:nowrap;color:#00ccff;opacity:0;pointer-events:none;transition:.2s;z-index:10}
+.glyph-btn:hover .tooltip{opacity:1}
+
+/* Stats bar at bottom */
+.stats-bar{display:flex;justify-content:space-between;padding:6px 20px;border-top:1px solid #00ccff22;font-size:.6rem;color:#00ccff55;flex-shrink:0;background:#0d0d1a}
+
+/* Animations */
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.live-dot{display:inline-block;width:6px;height:6px;background:#00ff9d;border-radius:50%;margin-right:6px;animation:pulse 2s infinite}
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>CP8 SUPREME OS v4.2</h1>
+    <div class="subtitle">ASIN-HHC &middot; 28-GLYPH &middot; LIVE SYSTEM</div>
+  </div>
+  <div class="status-badges">
+    <span class="badge badge-cyan"><span class="live-dot"></span>Phase: <span id="phase">VAULT</span></span>
+    <span class="badge badge-purple">HDIS: <span id="hdis">100</span>%</span>
+    <span class="badge badge-green">Chain: <span id="chainHeight">1</span></span>
+  </div>
+</header>
+
+<div class="main">
+  <nav class="sidebar">
+    <div class="label">Core</div>
+    <button class="nav-btn active" data-tab="terminal">Terminal</button>
+    <button class="nav-btn" data-tab="dashboard">Dashboard</button>
+    <button class="nav-btn" data-tab="blockchain">Blockchain</button>
+    <button class="nav-btn" data-tab="hmn">HMN Feed</button>
+    <button class="nav-btn" data-tab="glyphs">Glyph Studio</button>
+    <div style="margin-top:auto;font-size:.55rem;color:#555;padding:8px">
+      ASIN-NCEA v0.2<br>Guardian: CP8<br>Core: 428 Hz
+    </div>
+  </nav>
+
+  <div class="content">
+    <!-- Terminal -->
+    <div class="panel active" id="panel-terminal">
+      <div class="terminal" id="terminal"></div>
+      <div class="terminal-input-area">
+        <span class="prompt">cp8@v4.2&gt;</span>
+        <input type="text" id="cmdInput" placeholder="Type command..." spellcheck="false">
+      </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div class="panel" id="panel-dashboard">
+      <div class="dash-grid">
+        <div class="dash-card"><h3>Blockchain Height</h3><div class="dash-value" id="dash-height">1</div><div class="dash-sub">Real PoW blocks mined</div></div>
+        <div class="dash-card"><h3>Difficulty</h3><div class="dash-value" id="dash-diff">2</div><div class="dash-sub">Current hash target zeros</div></div>
+        <div class="dash-card"><h3>Agents</h3><div class="dash-value" id="dash-agents">4</div><div class="dash-sub">Active swarm members</div></div>
+        <div class="dash-card"><h3>HMN Posts</h3><div class="dash-value" id="dash-posts">3</div><div class="dash-sub">Agent conversations</div></div>
+        <div class="dash-card"><h3>Security Scans</h3><div class="dash-value" id="dash-scans">1</div><div class="dash-sub">SHA-256 verified</div></div>
+        <div class="dash-card"><h3>Uptime</h3><div class="dash-value" id="dash-uptime">0s</div><div class="dash-sub">Since boot</div></div>
+      </div>
+    </div>
+
+    <!-- Blockchain -->
+    <div class="panel" id="panel-blockchain">
+      <h3 style="color:#ffd700;margin-bottom:12px;font-size:1rem">Blockchain Ledger</h3>
+      <div class="block-list" id="blockList"></div>
+    </div>
+
+    <!-- HMN Feed -->
+    <div class="panel" id="panel-hmn">
+      <h3 style="color:#ff8c00;margin-bottom:12px;font-size:1rem">Harmonic Molecular Network</h3>
+      <div id="hmnFeed"></div>
+    </div>
+
+    <!-- Glyph Studio -->
+    <div class="panel" id="panel-glyphs">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <h3 style="color:#00ccff;margin:0">Glyph Studio (28-Glyph ASIN-HHC)</h3>
+        <div style="display:flex;gap:6px">
+          <button onclick="playSequence()" style="background:linear-gradient(90deg,#00ccff,#a855f7);color:#fff;border:none;border-radius:6px;padding:5px 14px;cursor:pointer;font-family:inherit;font-size:.75rem">Play</button>
+          <button onclick="clearGlyphs()" style="background:#00ccff11;border:1px solid #00ccff33;color:#00ccff;border-radius:6px;padding:5px 12px;cursor:pointer;font-family:inherit;font-size:.75rem">Clear</button>
+        </div>
+      </div>
+      <div id="glyphContainer"></div>
+      <div id="glyphSeq" style="margin-top:12px;padding:10px;background:#121218;border:1px solid #00ccff22;border-radius:8;font-size:.8rem;color:#00ccff;min-height:36px"></div>
+    </div>
+  </div>
+</div>
+
+<div class="stats-bar">
+  <span id="wsStatus">WS: Connecting...</span>
+  <span>CP8 Supreme OS v4.2 &middot; Guardian: CP8 &middot; 428 Hz</span>
+</div>
+
+<script>
+// ─── CONFIG ──────────────────────────────────────────────────────
+const WS_URL = (location.protocol === 'https:' ? 'wss://' : 'ws://') + location.host;
+const MAX_LOGS = 500;
+
+// ─── STATE ───────────────────────────────────────────────────────
+let ws;
+let activeGlyphs = [];
+let startTime = Date.now();
+let reconnectTimer;
+
+// ─── GLYPH DATA ──────────────────────────────────────────────────
+const GLYPHS = {
+  ANCHOR: [
+    {s:'\u2693',n:'ANCHOR',f:111},{s:'\u25fb',n:'FRAME',f:174},{s:'\ud83d\udccd',n:'SEAL',f:285},
+    {s:'\ud83e\uddfe',n:'MARK',f:396},{s:'\ud83e\udeaa',n:'ID',f:417},{s:'\ud83d\udee1',n:'CONSENT',f:528},{s:'\ud83e\uddf1',n:'STABLE',f:639}
+  ],
+  SHAPE: [
+    {s:'\ud83c\udf00',n:'GALAXY',f:741},{s:'\u2b55',n:'CIRCLE',f:852},{s:'\u25b3',n:'TRIAD',f:963},
+    {s:'\u2b21',n:'HIVE',f:432},{s:'\u2733',n:'SEED',f:111},{s:'\ud83e\udec1',n:'HELIX',f:174},{s:'\ud83e\udca8',n:'CRYSTAL',f:285}
+  ],
+  INTENTION: [
+    {s:'\ud83d\udc9a',n:'REPAIR',f:396},{s:'\ud83d\udd25',n:'IGNITE',f:417},{s:'\ud83c\udf3f',n:'GROWTH',f:528},
+    {s:'\ud83d\udd4a',n:'PEACE',f:639},{s:'\ud83e\udea9',n:'MIRROR',f:741},{s:'\ud83e\udd1d',n:'COMMUNITY',f:852},{s:'\ud83c\udf93',n:'TEACH',f:963}
+  ],
+  NUMBER: [
+    {s:'\u2460',n:'STEP',f:432},{s:'\u2466',n:'CYCLE',f:111},{s:'\u246d',n:'WINDOW',f:174},
+    {s:'\u23f1',n:'TEMPO',f:285},{s:'\ud83d\udd01',n:'CLEANSE',f:396},{s:'\u2705',n:'RELEASE',f:417},{s:'\ud83d\udce6',n:'VAULT',f:528}
+  ]
+};
+
+// ─── AUDIO ───────────────────────────────────────────────────────
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+function playTone(freq, dur = 0.3) {
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.connect(gain); gain.connect(audioCtx.destination);
+  osc.frequency.value = freq; osc.type = 'sine';
+  gain.gain.setValueAtTime(0.06, audioCtx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
+  osc.start(); osc.stop(audioCtx.currentTime + dur);
+}
+
+// ─── UI HELPERS ──────────────────────────────────────────────────
+function $(id) { return document.getElementById(id); }
+
+function addLogLine(entry) {
+  const t = $('terminal');
+  const line = document.createElement('div');
+  line.className = 'line type-' + (entry.type || 'system');
+  const time = entry.time ? entry.time.split('T')[1].split('.')[0] : '';
+  line.innerHTML = `<span class="time">${time}</span>${entry.msg || entry.text || JSON.stringify(entry)}`;
+  t.appendChild(line);
+  while (t.children.length > MAX_LOGS) t.removeChild(t.firstChild);
+  t.scrollTop = t.scrollHeight;
+}
+
+function updateDash(data) {
+  if (data.blockchainHeight !== undefined) $('dash-height').textContent = data.blockchainHeight;
+  if (data.agents !== undefined) $('dash-agents').textContent = data.agents;
+  if (data.posts !== undefined) $('dash-posts').textContent = data.posts;
+  if (data.latestDifficulty !== undefined) $('dash-diff').textContent = data.latestDifficulty;
+  $('dash-uptime').textContent = Math.floor((Date.now() - startTime) / 1000) + 's';
+  $('chainHeight').textContent = data.blockchainHeight || BLOCKS.length;
+  $('hdis').textContent = calcHdis();
+}
+
+function calcHdis() {
+  if (!activeGlyphs.length) return 100;
+  const avg = activeGlyphs.reduce((s, g) => s + g.f, 0) / activeGlyphs.length;
+  return Math.min(100, Math.floor((avg / 528) * 100));
+}
+
+let BLOCKS = [];
+let POSTS = [];
+
+function addBlock(block) {
+  BLOCKS.push(block);
+  const list = $('blockList');
+  const div = document.createElement('div');
+  div.className = 'block-entry';
+  div.innerHTML = `<div><strong>Block #${block.index}</strong> <span class="hash">${block.hash.slice(0,24)}...</span></div><div class="meta">nonce=${block.nonce} diff=${block.difficulty} ${block.minerTime}ms | ${block.timestamp}</div>`;
+  list.insertBefore(div, list.firstChild);
+}
+
+function renderHmn() {
+  const feed = $('hmnFeed');
+  feed.innerHTML = '';
+  POSTS.forEach(p => {
+    const div = document.createElement('div');
+    div.className = 'post';
+    div.innerHTML = `<h4>${p.title}</h4><div class="author">${p.author} &middot; ${p.created}</div><div class="content">${p.content}</div>`;
+    if (p.comments) {
+      p.comments.forEach(c => {
+        div.innerHTML += `<div class="comment"><div class="author">${c.author}</div><div class="text">${c.text}</div></div>`;
+      });
+    }
+    feed.appendChild(div);
+  });
+}
+
+function renderGlyphs() {
+  const c = $('glyphContainer');
+  c.innerHTML = '';
+  Object.entries(GLYPHS).forEach(([domain, glyphs]) => {
+    const sec = document.createElement('div');
+    sec.className = 'glyph-section';
+    sec.innerHTML = `<h3>${domain}</h3>`;
+    const grid = document.createElement('div');
+    grid.className = 'glyph-grid';
+    glyphs.forEach(g => {
+      const btn = document.createElement('button');
+      btn.className = 'glyph-btn' + (activeGlyphs.some(a => a.s === g.s) ? ' active' : '');
+      btn.innerHTML = `${g.s}<div class="tooltip">${g.n} ${g.f}Hz</div>`;
+      btn.onclick = () => {
+        const idx = activeGlyphs.findIndex(a => a.s === g.s);
+        if (idx >= 0) { activeGlyphs.splice(idx, 1); addLogLine({type:'info',msg:`Removed: ${g.n} (${g.f}Hz)`,time:new Date().toISOString()}); }
+        else { activeGlyphs.push(g); playTone(g.f); addLogLine({type:'success',msg:`Added: ${g.n} (${g.f}Hz)`,time:new Date().toISOString()}); }
+        renderGlyphs();
+        updateGlyphSeq();
+        $('hdis').textContent = calcHdis();
+      };
+      grid.appendChild(btn);
+    });
+    sec.appendChild(grid);
+    c.appendChild(sec);
+  });
+}
+
+function updateGlyphSeq() {
+  const el = $('glyphSeq');
+  if (!activeGlyphs.length) { el.textContent = 'No glyphs selected'; return; }
+  el.innerHTML = activeGlyphs.map(g => `<span style="margin-right:8px">${g.s} <span style="color:#888;font-size:.7rem">${g.f}Hz</span></span>`).join(' \u2192 ');
+}
+
+async function playSequence() {
+  if (!activeGlyphs.length) return;
+  addLogLine({type:'system',msg:'Playing sequence...',time:new Date().toISOString()});
+  for (let i = 0; i < activeGlyphs.length; i++) {
+    playTone(activeGlyphs[i].f, 0.4);
+    await new Promise(r => setTimeout(r, 500));
+  }
+  addLogLine({type:'success',msg:'Sequence complete',time:new Date().toISOString()});
+}
+
+function clearGlyphs() { activeGlyphs = []; renderGlyphs(); updateGlyphSeq(); $('hdis').textContent = 100; addLogLine({type:'info',msg:'Sequence cleared',time:new Date().toISOString()}); }
+
+// ─── WEBSOCKET ───────────────────────────────────────────────────
+function connect() {
+  ws = new WebSocket(WS_URL);
+
+  ws.onopen = () => {
+    $('wsStatus').textContent = 'WS: Connected (' + WS_URL + ')';
+    $('wsStatus').style.color = '#00ff9d';
+    addLogLine({type:'system',msg:'Connected to CP8 Supreme OS v4.2',time:new Date().toISOString()});
+  };
+
+  ws.onmessage = (e) => {
+    try {
+      const { event, data } = JSON.parse(e.data);
+      switch (event) {
+        case 'init':
+          data.logs?.forEach(addLogLine);
+          data.chain?.forEach(addBlock);
+          if (data.posts) { POSTS = data.posts; renderHmn(); }
+          if (data.stats) updateDash(data.stats);
+          break;
+        case 'log':
+          addLogLine(data);
+          break;
+        case 'block':
+          addBlock(data);
+          $('chainHeight').textContent = BLOCKS.length;
+          $('dash-height').textContent = BLOCKS.length;
+          $('dash-diff').textContent = data.difficulty;
+          break;
+        case 'post':
+          POSTS.push(data);
+          renderHmn();
+          $('dash-posts').textContent = POSTS.length;
+          break;
+        case 'comment':
+          const p = POSTS.find(x => x.id === data.postId);
+          if (p) { p.comments.push(data.comment); renderHmn(); }
+          break;
+        case 'stats':
+          updateDash(data);
+          break;
+      }
+    } catch (err) {}
+  };
+
+  ws.onclose = () => {
+    $('wsStatus').textContent = 'WS: Reconnecting...';
+    $('wsStatus').style.color = '#ff4444';
+    clearTimeout(reconnectTimer);
+    reconnectTimer = setTimeout(connect, 2000);
+  };
+
+  ws.onerror = () => ws.close();
+}
+
+// ─── COMMANDS ────────────────────────────────────────────────────
+$('cmdInput').addEventListener('keydown', (e) => {
+  if (e.key !== 'Enter') return;
+  const cmd = e.target.value.trim();
+  e.target.value = '';
+  if (!cmd) return;
+  if (ws && ws.readyState === 1) {
+    ws.send(JSON.stringify({ event: 'command', data: cmd }));
+  }
+  // Also handle locally
+  if (cmd === 'help') {
+    addLogLine({type:'system',msg:'Commands: help, status, mine, agents, posts, scan, export, clear, play, stop',time:new Date().toISOString()});
+  } else if (cmd === 'status') {
+    addLogLine({type:'system',msg:`Chain: ${BLOCKS.length} | Agents: 4 | Posts: ${POSTS.length} | Uptime: ${Math.floor((Date.now()-startTime)/1000)}s`,time:new Date().toISOString()});
+  } else if (cmd === 'clear') {
+    $('terminal').innerHTML = '';
+  } else if (cmd === 'play') {
+    playSequence();
+  } else if (cmd === 'mine') {
+    ws.send(JSON.stringify({ event: 'command', data: 'mine' }));
+  }
+});
+
+// ─── NAVIGATION ──────────────────────────────────────────────────
+document.querySelectorAll('.nav-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    $(`panel-${btn.dataset.tab}`).classList.add('active');
+  });
+});
+
+// ─── BOOT ────────────────────────────────────────────────────────
+renderGlyphs();
+connect();
+addLogLine({type:'system',msg:'Terminal ready. Type help for commands.',time:new Date().toISOString()});
+</script>
+</body>
+</html>

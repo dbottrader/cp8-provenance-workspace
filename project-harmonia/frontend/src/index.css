@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-cp8-dark text-cp8-text;
+  }
+}
+
+@layer components {
+  .panel {
+    @apply bg-cp8-panel border border-white/10 rounded-lg p-4;
+  }
+  .input-cp8 {
+    @apply bg-cp8-dark border border-white/20 rounded px-3 py-2 text-sm 
+           focus:outline-none focus:border-cp8-accent focus:ring-1 focus:ring-cp8-accent/50
+           transition-all duration-200;
+  }
+  .btn-cp8 {
+    @apply bg-cp8-accent/90 hover:bg-cp8-accent text-white px-4 py-2 rounded 
+           font-medium text-sm transition-all duration-200 
+           active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  .code-block {
+    @apply bg-cp8-dark border border-white/10 rounded p-3 font-mono text-xs 
+           overflow-x-auto whitespace-pre-wrap;
+  }
+}

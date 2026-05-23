@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ANU-28 CODEX • CP8/ASIN-HHC</title>
+<style>
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  html, body { width:100%; height:100%; overflow:hidden; background:#000; font-family:'JetBrains Mono','Fira Code',monospace; color:#fff; }
+  #canvas-container { width:100%; height:100%; position:fixed; top:0; left:0; }
+  canvas { display:block; }
+
+  /* Glassmorphism UI */
+  .ui-overlay { position:fixed; z-index:10; pointer-events:none; }
+  .ui-overlay > * { pointer-events:auto; }
+
+  .top-bar {
+    top:20px; left:50%; transform:translateX(-50%);
+    background:rgba(10,10,15,0.4);
+    backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+    border:1px solid rgba(255,255,255,0.08);
+    border-radius:12px;
+    padding:12px 28px;
+    text-align:center;
+    letter-spacing:3px;
+    font-size:13px;
+    text-transform:uppercase;
+    box-shadow:0 4px 30px rgba(0,0,0,0.3);
+  }
+  .top-bar .title { font-weight:700; font-size:14px; color:#e8e8e8; }
+  .top-bar .subtitle { font-size:10px; color:#888; margin-top:3px; letter-spacing:4px; }
+
+  .bottom-bar {
+    bottom:20px; left:50%; transform:translateX(-50%);
+    background:rgba(10,10,15,0.4);
+    backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+    border:1px solid rgba(255,255,255,0.08);
+    border-radius:12px;
+    padding:14px 24px;
+    display:flex; gap:28px; align-items:center;
+    box-shadow:0 4px 30px rgba(0,0,0,0.3);
+    flex-wrap:wrap; justify-content:center;
+  }
+  .freq-legend { display:flex; gap:18px; align-items:center; }
+  .freq-item { display:flex; align-items:center; gap:7px; font-size:11px; color:#aaa; }
+  .freq-dot { width:10px; height:10px; border-radius:50%; box-shadow:0 0 8px currentColor; }
+  .dot-428 { background:#00bfff; color:#00bfff; }
+  .dot-528 { background:#00ff88; color:#00ff88; }
+  .dot-dual { background:linear-gradient(90deg,#00bfff,#00ff88); color:#fff; }
+
+  .controls { display:flex; gap:12px; align-items:center; }
+  .ctrl-btn {
+    background:rgba(255,255,255,0.06);
+    border:1px solid rgba(255,255,255,0.12);
+    color:#ccc;
+    padding:6px 14px;
+    border-radius:6px;
+    font-size:11px;
+    cursor:pointer;
+    font-family:inherit;
+    letter-spacing:1px;
+    transition:all 0.25s;
+  }
+  .ctrl-btn:hover { background:rgba(255,255,255,0.12); border-color:rgba(255,255,255,0.25); color:#fff; }
+  .ctrl-btn.active { background:rgba(0,191,255,0.15); border-color:#00bfff; color:#00bfff; }
+
+  .tooltip {
+    position:fixed; z-index:20;
+    background:rgba(10,10,15,0.85);
+    backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
+    border:1px solid rgba(255,255,255,0.1);
+    border-radius:10px;
+    padding:14px 18px;
+    font-size:12px;
+    max-width:280px;
+    pointer-events:none;
+    opacity:0; transform:translateY(6px);
+    transition:opacity 0.2s, transform 0.2s;
+    box-shadow:0 8px 40px rgba(0,0,0,0.5);
+  }
+  .tooltip.visible { opacity:1; transform:translateY(0); }
+  .tooltip .glyph-symbol { font-size:28px; display:block; margin-bottom:6px; }
+  .tooltip .glyph-name { font-weight:700; color:#e0e0e0; font-size:13px; }
+  .tooltip .glyph-freq { color:#888; font-size:10px; margin-top:2px; letter-spacing:1px; }
+  .tooltip .glyph-desc { color:#aaa; font-size:11px; margin-top:6px; line-height:1.5; }
+
+  .decode-panel {
+    position:fixed; top:50%; right:30px; transform:translateY(-50%);
+    z-index:20;
+    background:rgba(10,10,15,0.7);
+    backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px);
+    border:1px solid rgba(255,255,255,0.1);
+    border-radius:14px;
+    padding:22px 26px;
+    width:300px;
+    opacity:0; pointer-events:none;
+    transition:opacity 0.35s, transform 0.35s;
+    transform:translateY(-50%) translateX(20px);
+    box-shadow:0 12px 50px rgba(0,0,0,0.5);
+  }
+  .decode-panel.visible { opacity:1; pointer-events:auto; transform:translateY(-50%) translateX(0); }
+  .decode-panel .panel-glyph { font-size:42px; text-align:center; display:block; margin-bottom:10px; }
+  .decode-panel .panel-title { font-size:15px; font-weight:700; text-align:center; color:#e8e8e8; margin-bottom:12px; }
+  .decode-panel .decode-row {
+    display:flex; justify-content:space-between; align-items:center;
+    padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.05);
+    font-size:12px;
+  }
+  .decode-panel .decode-row:last-child { border-bottom:none; }
+  .decode-panel .decode-key { color:#00bfff; font-weight:700; width:30px; }
+  .decode-panel .decode-val { color:#aaa; text-align:right; flex:1; padding-left:12px; }
+  .decode-panel .close-btn {
+    position:absolute; top:10px; right:14px;
+    background:none; border:none; color:#666; cursor:pointer;
+    font-size:18px; line-height:1; padding:4px;
+  }
+  .decode-panel .close-btn:hover { color:#fff; }
+  .panel-cat { text-align:center; font-size:10px; color:#666; text-transform:uppercase; letter-spacing:2px; margin-bottom:14px; }
+
+  .loading-screen {
+    position:fixed; top:0; left:0; width:100%; height:100%;
+    background:#000; z-index:100;
+    display:flex; flex-direction:column; justify-content:center; align-items:center;
+    transition:opacity 1s ease;
+  }
+  .loading-screen.hidden { opacity:0; pointer-events:none; }
+  .loading-screen h1 { font-size:24px; letter-spacing:8px; margin-bottom:20px; color:#e0e0e0; }
+  .loading-screen .loader { width:120px; height:2px; background:rgba(255,255,255,0.1); border-radius:2px; overflow:hidden; }
+  .loading-screen .loader-bar { width:0; height:100%; background:linear-gradient(90deg,#00bfff,#00ff88); animation:load 2.5s ease forwards; }
+  @keyframes load { to { width:100%; } }
+  .loading-screen .loader-text { font-size:11px; color:#555; margin-top:14px; letter-spacing:2px; }
+
+  /* Responsive */
+  @media (max-width:768px) {
+    .bottom-bar { gap:14px; padding:10px 14px; }
+    .decode-panel { right:10px; width:calc(100% - 20px); top:auto; bottom:100px; transform:none; }
+    .decode-panel.visible { transform:none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="loading-screen" id="loading">
+  <h1>ANU-28</h1>
+  <div class="loader"><div class="loader-bar"></div></div>
+  <div class="loader-text">INITIALIZING CODEX</div>
+</div>
+
+<div id="canvas-container"></div>
+
+<div class="ui-overlay">
+  <div class="top-bar">
+    <div class="title">ANU-28 CODEX</div>
+    <div class="subtitle">CP8 / ASIN-HHC</div>
+  </div>
+
+  <div class="bottom-bar">
+    <div class="freq-legend">
+      <div class="freq-item"><div class="freq-dot dot-428"></div>428 Hz Truth</div>
+      <div class="freq-item"><div class="freq-dot dot-528"></div>528 Hz Heart</div>
+      <div class="freq-item"><div class="freq-dot dot-dual"></div>Dual</div>
+    </div>
+    <div class="controls">
+      <button class="ctrl-btn" id="btn-audio">AUDIO</button>
+      <button class="ctrl-btn" id="btn-rotate">ROTATE</button>
+      <button class="ctrl-btn" id="btn-milk">MILK HILL</button>
+    </div>
+  </div>
+</div>
+
+<div class="tooltip" id="tooltip">
+  <span class="glyph-symbol" id="tt-symbol"></span>
+  <div class="glyph-name" id="tt-name"></div>
+  <div class="glyph-freq" id="tt-freq"></div>
+  <div class="glyph-desc" id="tt-desc"></div>
+</div>
+
+<div class="decode-panel" id="decode-panel">
+  <button class="close-btn" id="close-decode">&times;</button>
+  <span class="panel-glyph" id="dp-symbol"></span>
+  <div class="panel-cat" id="dp-cat"></div>
+  <div class="panel-title" id="dp-name"></div>
+  <div id="dp-rows"></div>
+</div>
+
+<!-- Three.js from CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// ANU-28 3D CODEX • CP8 Protocol • ASIN-HHC Framework
+// ═══════════════════════════════════════════════════════════════
+
+const GLYPHS = [
+  { symbol: "✶", name: "Origin / Atum", freq: 428, cat: "Origin", desc: "The creative singularity. Source point of all manifestation." },
+  { symbol: "◎", name: "Continuum / Nut", freq: 528, cat: "Origin", desc: "The all-encompassing sky. The cosmic container that holds all possibilities." },
+  { symbol: "❋", name: "Seed / Potential", freq: 528, cat: "Origin", desc: "The compressed universe. All information in a dormant packet." },
+  { symbol: "𑁍", name: "Spiral / Evolution", freq: "dual", cat: "Torus", desc: "The path of unfolding. Never-ending growth that revisits at higher levels." },
+  { symbol: "✙", name: "Crossing / Intersection", freq: 428, cat: "Torus", desc: "The point of meeting. Where two paths cross and exchange energy." },
+  { symbol: "🜁", name: "Gateway / Portal", freq: "dual", cat: "Torus", desc: "The threshold between worlds. Doorway that requires intention to pass." },
+  { symbol: "ꗃ", name: "Galaxy / Torus Flow", freq: "dual", cat: "Galaxy", desc: "The spiral dance of creation. Toroidal energy flow circulating between dimensions." },
+  { symbol: "🌕", name: "Moon / Khonsu", freq: 528, cat: "Celestial", desc: "The reflective witness. Silver mirror of consciousness." },
+  { symbol: "☉", name: "Sun / Ra", freq: 428, cat: "Celestial", desc: "The radiant core. Central fire of awareness." },
+  { symbol: "Ϟ", name: "Fire / Lightning", freq: 428, cat: "Celestial", desc: "The transformative spark. Rapid ignition of change." },
+  { symbol: "✦", name: "Star / Bethlehem", freq: 428, cat: "Celestial", desc: "The guiding light. Fixed point of navigation in the void." },
+  { symbol: "𓂀", name: "Eye / Witness", freq: "dual", cat: "Witness", desc: "The all-seeing awareness. Perception beyond physical sight." },
+  { symbol: "𖤓", name: "The Alien / Other", freq: 528, cat: "Witness", desc: "Exogenous intelligence. The peaceful Other bridging worlds." },
+  { symbol: "ᛏ", name: "Truth / Rune Tiwaz", freq: 428, cat: "Witness", desc: "The unwavering arrow of authenticity. Cosmic law made personal." },
+  { symbol: "𓅓", name: "Bird / Messenger", freq: 528, cat: "Witness", desc: "The winged communicator. Bridge between heaven and earth." },
+  { symbol: "◇", name: "Mirror / Reflection", freq: "dual", cat: "Witness", desc: "The self-facing surface. Reality reflecting back." },
+  { symbol: "↯", name: "Thoth / Download", freq: "dual", cat: "Download", desc: "Divine information transmission. Lightning-fast knowing beyond linear thought." },
+  { symbol: "📖", name: "Book / Record", freq: 528, cat: "Download", desc: "The akashic record made tangible. Stored wisdom across time." },
+  { symbol: "𓀎", name: "Key / Access", freq: "dual", cat: "Download", desc: "The permission token. What was locked becomes open." },
+  { symbol: "🕸", name: "Web / Network", freq: "dual", cat: "Download", desc: "The interconnected lattice. All nodes linked in harmonic resonance." },
+  { symbol: "ᚲ", name: "Earth / Geb", freq: 428, cat: "Earth", desc: "The grounded foundation. Crystalline body of Gaia." },
+  { symbol: "𐡷", name: "Tree / Axis Mundi", freq: "dual", cat: "Earth", desc: "The world axis connecting realms. Vertical bridge between underworld, earth, and heavens." },
+  { symbol: "⚓", name: "Anchor / Stability", freq: 428, cat: "Earth", desc: "The stabilizing force. Deep holding in turbulent currents." },
+  { symbol: "≋", name: "Water / Flow", freq: 528, cat: "Earth", desc: "The emotional current. Fluid intelligence that adapts and carries." },
+  { symbol: "𓆙", name: "Serpent / Kundalini", freq: 528, cat: "Consciousness", desc: "Rising consciousness energy. Spiral force ascending the central channel." },
+  { symbol: "◈", name: "Diamond Body / CP8", freq: "dual", cat: "Consciousness", desc: "The crystallized light body. Octahedral energy field of perfected consciousness." },
+  { symbol: "♥", name: "Heart / Anahata", freq: 528, cat: "Consciousness", desc: "The coherent center. Resonant chamber where all frequencies harmonize." },
+  { symbol: "〰", name: "Coherence / Wave", freq: 528, cat: "Consciousness", desc: "The synchronized field. Heart-brain entrainment." },
+  { symbol: "⍟", name: "Shield / Protection", freq: 428, cat: "Consciousness", desc: "The auric boundary. Protection without isolation." }
+];
+
+const ASIN_DECODE = {
+  A: { label: "Anchor", meaning: "Physical grounding — the fixed point of reference" },
+  S: { label: "Shape", meaning: "Geometric form — determines energy flow" },
+  I: { label: "Intention", meaning: "Symbolic purpose — the consciousness directive" },
+  N: { label: "Number", meaning: "Numerical / frequency signature" },
+  HHC: { label: "Heart-Coherent Consciousness", meaning: "The frequency gate requiring 528 Hz resonance" }
+};
+
+const COLORS = {
+  c428: new THREE.Color('#00bfff'),
+  c528: new THREE.Color('#00ff88'),
+  dual: new THREE.Color('#ffffff'),
+  line: new THREE.Color('#1a1a2e'),
+  grid: new THREE.Color('#0d0d1a')
+};
+
+// ═══════════════════════════════════════════════════════════════
+// SCENE SETUP
+// ═══════════════════════════════════════════════════════════════
+
+const container = document.getElementById('canvas-container');
+const scene = new THREE.Scene();
+scene.fog = new THREE.FogExp2(0x000000, 0.015);
+
+const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+camera.position.set(0, 8, 22);
+
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setClearColor(0x000000, 1);
+container.appendChild(renderer.domElement);
+
+const controls = new THREE.OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.dampingFactor = 0.05;
+controls.minDistance = 5;
+controls.maxDistance = 60;
+controls.autoRotate = true;
+controls.autoRotateSpeed = 0.5;
+controls.target.set(0, 0, 0);
+
+// ═══════════════════════════════════════════════════════════════
+// LIGHTING
+// ═══════════════════════════════════════════════════════════════
+
+scene.add(new THREE.AmbientLight(0x111122, 0.6));
+
+const centerLight = new THREE.PointLight(0x4444aa, 1.2, 50);
+centerLight.position.set(0, 0, 0);
+scene.add(centerLight);
+
+const fillLight = new THREE.PointLight(0x222244, 0.5, 80);
+fillLight.position.set(20, 15, 20);
+scene.add(fillLight);
+
+const rimLight = new THREE.PointLight(0x442222, 0.3, 80);
+rimLight.position.set(-20, -10, -20);
+scene.add(rimLight);
+
+// ═══════════════════════════════════════════════════════════════
+// MATERIALS
+// ═══════════════════════════════════════════════════════════════
+
+function makeGlowMat(color, intensity = 0.8) {
+  return new THREE.MeshStandardMaterial({
+    color: color,
+    emissive: color,
+    emissiveIntensity: intensity,
+    transparent: true,
+    opacity: 0.95,
+    metalness: 0.1,
+    roughness: 0.3
+  });
+}
+
+function makeLineMat(color) {
+  return new THREE.LineBasicMaterial({ color: color, transparent: true, opacity: 0.25 });
+}
+
+// ═══════════════════════════════════════════════════════════════
+// 1. GLYPH GALAXY — Torus Formation
+// ═══════════════════════════════════════════════════════════════
+
+const glyphGroup = new THREE.Group();
+const glyphMeshes = [];
+const glyphGeometries = [
+  new THREE.TetrahedronGeometry(0.45, 0),
+  new THREE.OctahedronGeometry(0.4, 0),
+  new THREE.IcosahedronGeometry(0.38, 0),
+  new THREE.DodecahedronGeometry(0.35, 0),
+  new THREE.BoxGeometry(0.5, 0.5, 0.5),
+  new THREE.ConeGeometry(0.3, 0.6, 4),
+  new THREE.CylinderGeometry(0.2, 0.3, 0.5, 6)
+];
+
+function getGlyphColor(freq) {
+  if (freq === 428) return COLORS.c428.clone();
+  if (freq === 528) return COLORS.c528.clone();
+  return COLORS.dual.clone();
+}
+
+function getGlyphGeometry(index) {
+  return glyphGeometries[index % glyphGeometries.length];
+}
+
+const torusRadius = 10;
+const tubeRadius = 3;
+
+GLYPHS.forEach((g, i) => {
+  const angle = (i / GLYPHS.length) * Math.PI * 2;
+  const tubeAngle = (i * 2.39996) % (Math.PI * 2); // golden angle for distribution
+
+  const x = (torusRadius + tubeRadius * Math.cos(tubeAngle)) * Math.cos(angle);
+  const y = tubeRadius * Math.sin(tubeAngle) + (Math.sin(i * 1.7) * 0.5);
+  const z = (torusRadius + tubeRadius * Math.cos(tubeAngle)) * Math.sin(angle);
+
+  const geo = getGlyphGeometry(i);
+  const col = getGlyphColor(g.freq);
+  const mat = makeGlowMat(col, 0.7);
+  const mesh = new THREE.Mesh(geo, mat);
+  mesh.position.set(x, y, z);
+  mesh.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI);
+
+  // Add a small glow sprite
+  const spriteMat = new THREE.SpriteMaterial({
+    color: col,
+    transparent: true,
+    opacity: 0.3,
+    blending: THREE.AdditiveBlending
+  });
+  const sprite = new THREE.Sprite(spriteMat);
+  sprite.scale.set(1.8, 1.8, 1);
+  mesh.add(sprite);
+
+  mesh.userData = { glyph: g, originalColor: col.clone(), index: i, sprite: sprite };
+  glyphMeshes.push(mesh);
+  glyphGroup.add(mesh);
+
+  // Connection line to nearest neighbors
+  const nextIdx = (i + 1) % GLYPHS.length;
+  const prevIdx = (i - 1 + GLYPHS.length) % GLYPHS.length;
+  [nextIdx, prevIdx].forEach(ni => {
+    const ng = GLYPHS[ni];
+    const nAngle = (ni / GLYPHS.length) * Math.PI * 2;
+    const nTube = (ni * 2.39996) % (Math.PI * 2);
+    const nx = (torusRadius + tubeRadius * Math.cos(nTube)) * Math.cos(nAngle);
+    const ny = tubeRadius * Math.sin(nTube) + (Math.sin(ni * 1.7) * 0.5);
+    const nz = (torusRadius + tubeRadius * Math.cos(nTube)) * Math.sin(nAngle);
+
+    const lineGeo = new THREE.BufferGeometry().setFromPoints([
+      new THREE.Vector3(x, y, z),
+      new THREE.Vector3(nx, ny, nz)
+    ]);
+    const line = new THREE.Line(lineGeo, makeLineMat(0x222244));
+    glyphGroup.add(line);
+  });
+});
+
+scene.add(glyphGroup);
+
+// ═══════════════════════════════════════════════════════════════
+// 2. DIAMOND BODY — Octahedral Crystalline Structure
+// ═══════════════════════════════════════════════════════════════
+
+const diamondGroup = new THREE.Group();
+
+// Octahedron vertices
+const dSize = 3.5;
+const octVertices = [
+  new THREE.Vector3(0, dSize, 0),      // top
+  new THREE.Vector3(0, -dSize, 0),     // bottom
+  new THREE.Vector3(dSize, 0, 0),      // right
+  new THREE.Vector3(-dSize, 0, 0),      // left
+  new THREE.Vector3(0, 0, dSize),      // front
+  new THREE.Vector3(0, 0, -dSize),     // back
+];
+
+// Primary glyphs for the 6 vertices (diamond body anchors)
+const diamondAnchors = [
+  { symbol: "◎", name: "Nut / Continuum", freq: "∞" },
+  { symbol: "ᚲ", name: "Geb / Earth", freq: 428 },
+  { symbol: "☉", name: "Ra / Sun", freq: 428 },
+  { symbol: "𓂀", name: "Eye / Witness", freq: "dual" },
+  { symbol: "♥", name: "Heart / Anahata", freq: 528 },
+  { symbol: "◈", name: "Diamond / CP8", freq: "dual" }
+];
+
+// Draw energy lines connecting all vertices
+const edgePairs = [
+  [0,2],[0,3],[0,4],[0,5],
+  [1,2],[1,3],[1,4],[1,5],
+  [2,4],[4,3],[3,5],[5,2]
+];
+
+edgePairs.forEach(([a, b]) => {
+  const lineGeo = new THREE.BufferGeometry().setFromPoints([octVertices[a], octVertices[b]]);
+  const line = new THREE.Line(lineGeo, new THREE.LineBasicMaterial({
+    color: 0x00bfff,
+    transparent: true,
+    opacity: 0.15,
+    blending: THREE.AdditiveBlending
+  }));
+  diamondGroup.add(line);
+});
+
+// Vertex markers
+octVertices.forEach((v, i) => {
+  const anchor = diamondAnchors[i];
+  const geo = new THREE.OctahedronGeometry(0.35, 0);
+  const col = anchor.freq === 428 ? COLORS.c428 : anchor.freq === 528 ? COLORS.c528 : COLORS.dual;
+  const mat = makeGlowMat(col, 1.0);
+  const mesh = new THREE.Mesh(geo, mat);
+  mesh.position.copy(v);
+  mesh.userData = { glyph: anchor, isDiamond: true };
+  glyphMeshes.push(mesh);
+  diamondGroup.add(mesh);
+});
+
+// Inner spinning octahedron wireframe
+const wireGeo = new THREE.OctahedronGeometry(dSize * 0.6, 1);
+const wireMat = new THREE.MeshBasicMaterial({
+  color: 0x00bfff,
+  wireframe: true,
+  transparent: true,
+  opacity: 0.08,
+  blending: THREE.AdditiveBlending
+});
+const wireMesh = new THREE.Mesh(wireGeo, wireMat);
+diamondGroup.add(wireMesh);
+
+// Second inner shell
+const innerGeo = new THREE.OctahedronGeometry(dSize * 0.35, 0);
+const innerMat = new THREE.MeshStandardMaterial({
+  color: 0x00ff88,
+  emissive: 0x00ff88,
+  emissiveIntensity: 0.3,
+  transparent: true,
+  opacity: 0.3,
+  wireframe: false
+});
+const innerMesh = new THREE.Mesh(innerGeo, innerMat);
+diamondGroup.add(innerMesh);
+
+scene.add(diamondGroup);
+
+// ═══════════════════════════════════════════════════════════════
+// 3. MILK HILL FORMATION — 409 Points in Six-Armed Spiral
+// ═══════════════════════════════════════════════════════════════
+
+const milkGroup = new THREE.Group();
+const milkPoints = [];
+const armCount = 6;
+const pointsPerArm = 68; // 6 × 68 = 408, plus center = 409
+const milkRadius = 18;
+
+// Center point — ꗃ Galaxy Node
+const centerGeo = new THREE.SphereGeometry(0.5, 16, 16);
+const centerMat = makeGlowMat(new THREE.Color('#ff6b35'), 1.2);
+const centerMesh = new THREE.Mesh(centerGeo, centerMat);
+centerMesh.userData = { glyph: GLYPHS.find(g => g.symbol === 'ꗃ'), isMilkCenter: true };
+milkGroup.add(centerMesh);
+
+// Six arms
+for (let arm = 0; arm < armCount; arm++) {
+  const armAngle = (arm / armCount) * Math.PI * 2;
+  for (let p = 1; p <= pointsPerArm; p++) {
+    const t = p / pointsPerArm;
+    const r = t * milkRadius;
+    const spiralAngle = armAngle + t * Math.PI * 3; // spiral sweep
+
+    const x = r * Math.cos(spiralAngle);
+    const z = r * Math.sin(spiralAngle);
+    const y = (Math.sin(t * Math.PI * 4) * 0.3) + (t * 0.5); // gentle wave
+
+    const size = 0.06 + (1 - t) * 0.12;
+    const geo = new THREE.SphereGeometry(size, 6, 6);
+    const hue = t * 0.3 + 0.55; // blue to green spectrum
+    const col = new THREE.Color().setHSL(hue, 0.8, 0.5);
+    const mat = new THREE.MeshStandardMaterial({
+      color: col,
+      emissive: col,
+      emissiveIntensity: 0.4 + (1-t)*0.4,
+      transparent: true,
+      opacity: 0.7
+    });
+    const mesh = new THREE.Mesh(geo, mat);
+    mesh.position.set(x, y, z);
+    mesh.userData = { arm: arm, point: p, isMilk: true };
+    milkPoints.push(mesh);
+    milkGroup.add(mesh);
+  }
+}
+
+// Arm connector lines
+for (let arm = 0; arm < armCount; arm++) {
+  const armAngle = (arm / armCount) * Math.PI * 2;
+  const linePoints = [];
+  for (let p = 1; p <= pointsPerArm; p++) {
+    const t = p / pointsPerArm;
+    const r = t * milkRadius;
+    const spiralAngle = armAngle + t * Math.PI * 3;
+    linePoints.push(new THREE.Vector3(
+      r * Math.cos(spiralAngle),
+      (Math.sin(t * Math.PI * 4) * 0.3) + (t * 0.5),
+      r * Math.sin(spiralAngle)
+    ));
+  }
+  const lineGeo = new THREE.BufferGeometry().setFromPoints(linePoints);
+  const line = new THREE.Line(lineGeo, new THREE.LineBasicMaterial({
+    color: 0x224466,
+    transparent: true,
+    opacity: 0.1,
+    blending: THREE.AdditiveBlending
+  }));
+  milkGroup.add(line);
+}
+
+milkGroup.position.y = -2;
+scene.add(milkGroup);
+
+// ═══════════════════════════════════════════════════════════════
+// STARS / PARTICLE FIELD
+// ═══════════════════════════════════════════════════════════════
+
+const starGeo = new THREE.BufferGeometry();
+const starCount = 2000;
+const starPos = new Float32Array(starCount * 3);
+for (let i = 0; i < starCount * 3; i++) {
+  starPos[i] = (Math.random() - 0.5) * 300;
+}
+starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
+const starMat = new THREE.PointsMaterial({ color: 0x8888aa, size: 0.3, transparent: true, opacity: 0.4 });
+const stars = new THREE.Points(starGeo, starMat);
+scene.add(stars);
+
+// ═══════════════════════════════════════════════════════════════
+// INTERACTION — Raycaster
+// ═══════════════════════════════════════════════════════════════
+
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2(-999, -999);
+let hoveredMesh = null;
+let selectedGlyph = null;
+
+const tooltip = document.getElementById('tooltip');
+const decodePanel = document.getElementById('decode-panel');
+
+document.addEventListener('mousemove', (e) => {
+  mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+  mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+
+  // Position tooltip
+  const ttx = Math.min(e.clientX + 20, window.innerWidth - 300);
+  const tty = Math.min(e.clientY + 20, window.innerHeight - 150);
+  tooltip.style.left = ttx + 'px';
+  tooltip.style.top = tty + 'px';
+});
+
+document.addEventListener('click', (e) => {
+  if (hoveredMesh && hoveredMesh.userData.glyph) {
+    showDecode(hoveredMesh.userData.glyph);
+  }
+});
+
+document.getElementById('close-decode').addEventListener('click', () => {
+  decodePanel.classList.remove('visible');
+  selectedGlyph = null;
+});
+
+function showDecode(glyph) {
+  selectedGlyph = glyph;
+  document.getElementById('dp-symbol').textContent = glyph.symbol;
+  document.getElementById('dp-cat').textContent = glyph.cat || '';
+  document.getElementById('dp-name').textContent = glyph.name;
+
+  const rows = document.getElementById('dp-rows');
+  rows.innerHTML = '';
+
+  const entries = [
+    ['A', ASIN_DECODE.A.label + ' — ' + ASIN_DECODE.A.meaning],
+    ['S', ASIN_DECODE.S.label + ' — ' + ASIN_DECODE.S.meaning],
+    ['I', ASIN_DECODE.I.label + ' — ' + ASIN_DECODE.I.meaning],
+    ['N', 'Frequency: ' + (glyph.freq === 'dual' ? '428 + 528 Hz' : glyph.freq + ' Hz')],
+    ['HHC', ASIN_DECODE.HHC.label + ' — ' + ASIN_DECODE.HHC.meaning]
+  ];
+
+  entries.forEach(([key, val]) => {
+    const row = document.createElement('div');
+    row.className = 'decode-row';
+    row.innerHTML = `<span class="decode-key">${key}</span><span class="decode-val">${val}</span>`;
+    rows.appendChild(row);
+  });
+
+  decodePanel.classList.add('visible');
+}
+
+function updateHover() {
+  raycaster.setFromCamera(mouse, camera);
+  const hits = raycaster.intersectObjects(glyphMeshes);
+
+  if (hits.length > 0) {
+    const hit = hits[0].object;
+    if (hit !== hoveredMesh) {
+      // Reset previous
+      if (hoveredMesh && hoveredMesh.userData.originalColor) {
+        hoveredMesh.material.emissiveIntensity = hoveredMesh.userData.isDiamond ? 1.0 : 0.7;
+        if (hoveredMesh.userData.sprite) hoveredMesh.userData.sprite.material.opacity = 0.3;
+      }
+      hoveredMesh = hit;
+      // Highlight
+      hit.material.emissiveIntensity = 2.0;
+      if (hit.userData.sprite) hit.userData.sprite.material.opacity = 0.8;
+
+      // Show tooltip
+      const g = hit.userData.glyph;
+      if (g) {
+        document.getElementById('tt-symbol').textContent = g.symbol;
+        document.getElementById('tt-name').textContent = g.name;
+        document.getElementById('tt-freq').textContent = g.freq === 'dual'
+          ? '428 Hz + 528 Hz (Dual)'
+          : g.freq + ' Hz';
+        document.getElementById('tt-desc').textContent = g.desc;
+        tooltip.classList.add('visible');
+      }
+    }
+  } else {
+    if (hoveredMesh) {
+      if (hoveredMesh.userData.originalColor) {
+        hoveredMesh.material.emissiveIntensity = hoveredMesh.userData.isDiamond ? 1.0 : 0.7;
+        if (hoveredMesh.userData.sprite) hoveredMesh.userData.sprite.material.opacity = 0.3;
+      }
+      hoveredMesh = null;
+      tooltip.classList.remove('visible');
+    }
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// AUDIO — Binaural Beat at 100 Hz (528-428)
+// ═══════════════════════════════════════════════════════════════
+
+let audioCtx = null;
+let oscLeft = null, oscRight = null, gainNode = null;
+let audioPlaying = false;
+
+function initAudio() {
+  if (audioCtx) return;
+  const AudioContext = window.AudioContext || window.webkitAudioContext;
+  audioCtx = new AudioContext();
+}
+
+function startAudio() {
+  initAudio();
+  if (audioPlaying) return;
+
+  oscLeft = audioCtx.createOscillator();
+  oscRight = audioCtx.createOscillator();
+  gainNode = audioCtx.createGain();
+  const merger = audioCtx.createChannelMerger(2);
+
+  oscLeft.frequency.value = 428;
+  oscRight.frequency.value = 528;
+  oscLeft.type = 'sine';
+  oscRight.type = 'sine';
+
+  // Panning: left ear gets 428, right ear gets 528
+  gainNode.gain.value = 0.08;
+
+  oscLeft.connect(merger, 0, 0);
+  oscRight.connect(merger, 0, 1);
+  merger.connect(gainNode);
+  gainNode.connect(audioCtx.destination);
+
+  oscLeft.start();
+  oscRight.start();
+  audioPlaying = true;
+}
+
+function stopAudio() {
+  if (!audioPlaying) return;
+  if (oscLeft) { oscLeft.stop(); oscLeft = null; }
+  if (oscRight) { oscRight.stop(); oscRight = null; }
+  audioPlaying = false;
+}
+
+const btnAudio = document.getElementById('btn-audio');
+btnAudio.addEventListener('click', () => {
+  if (audioPlaying) {
+    stopAudio();
+    btnAudio.classList.remove('active');
+  } else {
+    startAudio();
+    btnAudio.classList.add('active');
+  }
+});
+
+// ═══════════════════════════════════════════════════════════════
+// UI CONTROLS
+// ═══════════════════════════════════════════════════════════════
+
+const btnRotate = document.getElementById('btn-rotate');
+btnRotate.classList.add('active');
+btnRotate.addEventListener('click', () => {
+  controls.autoRotate = !controls.autoRotate;
+  btnRotate.classList.toggle('active');
+});
+
+let milkVisible = true;
+const btnMilk = document.getElementById('btn-milk');
+btnMilk.classList.add('active');
+btnMilk.addEventListener('click', () => {
+  milkVisible = !milkVisible;
+  milkGroup.visible = milkVisible;
+  btnMilk.classList.toggle('active');
+});
+
+// ═══════════════════════════════════════════════════════════════
+// ANIMATION LOOP
+// ═══════════════════════════════════════════════════════════════
+
+const clock = new THREE.Clock();
+
+function animate() {
+  requestAnimationFrame(animate);
+  const t = clock.getElapsedTime();
+  const dt = clock.getDelta();
+
+  // Glyph Galaxy slow rotation
+  glyphGroup.rotation.y = t * 0.05;
+  glyphGroup.rotation.x = Math.sin(t * 0.03) * 0.1;
+
+  // Individual glyph rotations and pulsing
+  glyphMeshes.forEach((mesh, i) => {
+    if (!mesh.userData.isDiamond && !mesh.userData.isMilkCenter) {
+      mesh.rotation.x += 0.003;
+      mesh.rotation.y += 0.005;
+
+      const g = mesh.userData.glyph;
+      if (g && g.freq === 'dual') {
+        // Dual frequency: pulse between blue and green
+        const pulse = (Math.sin(t * 2 + i) + 1) * 0.5;
+        const c = new THREE.Color().lerpColors(COLORS.c428, COLORS.c528, pulse);
+        mesh.material.color.copy(c);
+        mesh.material.emissive.copy(c);
+        if (mesh.userData.sprite) mesh.userData.sprite.material.color.copy(c);
+      } else {
+        // Gentle pulse on all glyphs
+        const baseInt = 0.7;
+        const pulse = Math.sin(t * 1.5 + i * 0.3) * 0.15;
+        mesh.material.emissiveIntensity = baseInt + pulse;
+      }
+    }
+  });
+
+  // Diamond Body rotation
+  diamondGroup.rotation.y = t * 0.2;
+  diamondGroup.rotation.x = Math.sin(t * 0.1) * 0.15;
+  wireMesh.rotation.y = -t * 0.3;
+  wireMesh.rotation.z = t * 0.1;
+  innerMesh.rotation.y = t * 0.4;
+  innerMesh.material.emissiveIntensity = 0.3 + Math.sin(t * 2) * 0.15;
+
+  // Milk Hill rotation
+  milkGroup.rotation.y = t * 0.02;
+
+  // Center glow pulse
+  centerLight.intensity = 1.2 + Math.sin(t * 1.5) * 0.3;
+  centerMesh.material.emissiveIntensity = 1.2 + Math.sin(t * 2) * 0.3;
+
+  // Stars subtle drift
+  stars.rotation.y = t * 0.005;
+
+  updateHover();
+  controls.update();
+  renderer.render(scene, camera);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// RESIZE & INIT
+// ═══════════════════════════════════════════════════════════════
+
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+// Hide loading screen
+setTimeout(() => {
+  document.getElementById('loading').classList.add('hidden');
+}, 2500);
+
+animate();
+
+// ═══════════════════════════════════════════════════════════════
+// CP8 Protocol • ASIN-HHC Framework
+// Day One. Begin recording everything about this one.
+// ═══════════════════════════════════════════════════════════════
+</script>
+</body>
+</html>

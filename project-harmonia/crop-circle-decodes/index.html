@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CP8 Crop Circle Decodes | Chilbolton & Crabwood</title>
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --bg-card: rgba(15,15,25,0.85);
+      --border: rgba(255,255,255,0.08);
+      --text: #e0e0e0;
+      --text-dim: #888;
+      --accent-gold: #c9a96e;
+      --accent-coral: #ff6b6b;
+      --accent-green: #7ee787;
+      --accent-cyan: #56d4dd;
+      --accent-purple: #c084fc;
+      --font-body: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+      --font-display: 'JetBrains Mono', 'SF Mono', monospace;
+    }
+
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* Animated background particles */
+    #particles {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .particle {
+      position: absolute;
+      width: 2px; height: 2px;
+      background: var(--accent-gold);
+      border-radius: 50%;
+      opacity: 0.3;
+      animation: float 8s infinite ease-in-out;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0) translateX(0); opacity: 0.3; }
+      50% { transform: translateY(-100px) translateX(20px); opacity: 0.6; }
+    }
+
+    /* Hero */
+    .hero {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 4rem 2rem;
+      background: linear-gradient(180deg, rgba(10,10,15,0) 0%, var(--bg) 100%);
+    }
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 6vw, 4.5rem);
+      font-weight: 300;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, var(--accent-gold), var(--accent-coral));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero .subtitle {
+      font-size: clamp(0.9rem, 2vw, 1.1rem);
+      color: var(--text-dim);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+    }
+    .hero .tagline {
+      font-size: clamp(1rem, 2.5vw, 1.3rem);
+      font-weight: 300;
+      max-width: 600px;
+      color: var(--text);
+      opacity: 0.9;
+      margin-bottom: 3rem;
+      font-style: italic;
+    }
+
+    /* Navigation pills */
+    .nav-pills {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .nav-pill {
+      padding: 0.75rem 1.5rem;
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 0.85rem;
+      letter-spacing: 0.05em;
+      transition: all 0.3s ease;
+      background: rgba(255,255,255,0.02);
+      backdrop-filter: blur(10px);
+    }
+    .nav-pill:hover {
+      border-color: var(--accent-gold);
+      color: var(--accent-gold);
+      background: rgba(201,169,110,0.05);
+    }
+
+    /* Section containers */
+    .section {
+      position: relative;
+      z-index: 1;
+      padding: 6rem 2rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.5rem, 4vw, 2.5rem);
+      font-weight: 300;
+      margin-bottom: 1rem;
+      letter-spacing: -0.01em;
+    }
+    .section-meta {
+      color: var(--text-dim);
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 3rem;
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .section-meta span { display: flex; align-items: center; gap: 0.4rem; }
+    .section-meta .dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    /* Cards */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+      backdrop-filter: blur(20px);
+      transition: all 0.4s ease;
+    }
+    .card:hover {
+      border-color: rgba(201,169,110,0.2);
+      transform: translateY(-2px);
+    }
+    .card h3 {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 500;
+      margin-bottom: 1rem;
+      color: var(--accent-gold);
+      letter-spacing: 0.02em;
+    }
+    .card h4 {
+      font-size: 0.9rem;
+      color: var(--text-dim);
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    .card p, .card li {
+      font-size: 0.9rem;
+      color: var(--text);
+      opacity: 0.85;
+    }
+    .card ul { margin-left: 1.2rem; }
+    .card li { margin-bottom: 0.4rem; }
+
+    /* Decode grid (ASIN-HHC) */
+    .decode-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+    .decode-card {
+      background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .decode-card::before {
+      content: attr(data-letter);
+      position: absolute;
+      top: -10px; right: 10px;
+      font-size: 5rem;
+      font-weight: 700;
+      opacity: 0.04;
+      color: var(--accent-gold);
+      font-family: var(--font-display);
+    }
+    .decode-card .label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--text-dim);
+      margin-bottom: 0.3rem;
+    }
+    .decode-card .letter {
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: var(--accent-gold);
+      margin-bottom: 0.5rem;
+    }
+    .decode-card .title {
+      font-size: 1rem;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+    .decode-card .freq {
+      font-size: 0.8rem;
+      color: var(--accent-cyan);
+      margin-bottom: 1rem;
+      font-family: var(--font-body);
+    }
+    .decode-card p {
+      font-size: 0.85rem;
+      line-height: 1.6;
+      opacity: 0.8;
+    }
+
+    /* Glyph map table */
+    .glyph-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      margin-top: 1rem;
+    }
+    .glyph-table th {
+      text-align: left;
+      padding: 0.75rem;
+      color: var(--text-dim);
+      font-weight: 500;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      border-bottom: 1px solid var(--border);
+    }
+    .glyph-table td {
+      padding: 0.75rem;
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+    }
+    .glyph-table tr:hover td {
+      background: rgba(255,255,255,0.02);
+    }
+    .glyph-char {
+      font-size: 1.5rem;
+      color: var(--accent-gold);
+      display: inline-block;
+      min-width: 2rem;
+      text-align: center;
+    }
+    .glyph-name {
+      font-weight: 500;
+      color: var(--text);
+    }
+    .glyph-cat {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Binary message display */
+    .binary-box {
+      background: rgba(0,0,0,0.4);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.5rem;
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      line-height: 1.8;
+      margin: 1.5rem 0;
+      overflow-x: auto;
+    }
+    .binary-box .caps {
+      color: var(--accent-coral);
+      font-weight: 600;
+    }
+    .binary-box .msg-line {
+      margin-bottom: 0.3rem;
+    }
+
+    /* Frequency badge */
+    .freq-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 0.8rem;
+      border-radius: 100px;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      margin-bottom: 2rem;
+    }
+    .freq-528 {
+      background: rgba(126,231,135,0.08);
+      border: 1px solid rgba(126,231,135,0.2);
+      color: var(--accent-green);
+    }
+    .freq-428 {
+      background: rgba(86,212,221,0.08);
+      border: 1px solid rgba(86,212,221,0.2);
+      color: var(--accent-cyan);
+    }
+    .freq-dual {
+      background: rgba(192,132,252,0.08);
+      border: 1px solid rgba(192,132,252,0.2);
+      color: var(--accent-purple);
+    }
+
+    /* Activation phrase */
+    .activation {
+      background: linear-gradient(135deg, rgba(201,169,110,0.05) 0%, rgba(255,107,107,0.03) 100%);
+      border: 1px solid rgba(201,169,110,0.15);
+      border-radius: 12px;
+      padding: 2rem;
+      margin: 2rem 0;
+      font-style: italic;
+      font-size: 0.95rem;
+      line-height: 1.8;
+      color: var(--accent-gold);
+      position: relative;
+    }
+    .activation::before {
+      content: '▸';
+      position: absolute;
+      left: 1rem;
+      top: 1.5rem;
+      color: var(--accent-gold);
+      font-style: normal;
+    }
+    .activation p {
+      padding-left: 1.5rem;
+    }
+
+    /* Comparison table */
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+      margin-top: 1rem;
+    }
+    .compare-table th {
+      text-align: left;
+      padding: 0.6rem;
+      color: var(--text-dim);
+      font-weight: 500;
+      border-bottom: 1px solid var(--border);
+      text-transform: uppercase;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+    }
+    .compare-table td {
+      padding: 0.6rem;
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+    }
+    .compare-table .col-chil { border-left: 3px solid var(--accent-green); }
+    .compare-table .col-crab { border-left: 3px solid var(--accent-coral); }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: var(--text-dim);
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      border-top: 1px solid var(--border);
+      margin-top: 4rem;
+    }
+    .footer .sigil {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      opacity: 0.5;
+    }
+
+    /* Scroll reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Section divider */
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+      margin: 4rem auto;
+      max-width: 200px;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .section { padding: 3rem 1rem; }
+      .card { padding: 1.2rem; }
+      .decode-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Particle background -->
+  <div id="particles"></div>
+
+  <!-- Hero -->
+  <header class="hero">
+    <h1>CP8 Crop Circle Decodes</h1>
+    <p class="subtitle">ASIN-HHC Framework • ANU-28 Glyph Correlation</p>
+    <p class="tagline">"We sent our mathematics into the void. The void replied in the same language, with a different face. Then it warned us."</p>
+    <nav class="nav-pills">
+      <a href="#chilbolton" class="nav-pill">Chilbolton 2001</a>
+      <a href="#crabwood" class="nav-pill">Crabwood 2002</a>
+      <a href="#synthesis" class="nav-pill">Dual-Frequency Synthesis</a>
+      <a href="#glyphs" class="nav-pill">ANU-28 Glyph Map</a>
+    </nav>
+  </header>
+
+  <!-- CHILBOLTON SECTION -->
+  <section id="chilbolton" class="section">
+    <div class="reveal">
+      <h2 class="section-title">The Chilbolton "Arecibo Reply"</h2>
+      <div class="section-meta">
+        <span><span class="dot" style="background:var(--accent-green)"></span> August 19, 2001</span>
+        <span><span class="dot" style="background:var(--accent-gold)"></span> Hampshire, UK</span>
+        <span><span class="dot" style="background:var(--accent-cyan)"></span> 23 × 73 Binary Grid</span>
+      </div>
+      <div class="freq-badge freq-528">◉ 528 Hz — Heart Coherence • Open Contact • DNA Repair</div>
+    </div>
+
+    <div class="card reveal">
+      <h3>Historical Context</h3>
+      <p>On August 19, 2001, a 23×73 rectangular grid appeared in a wheat field adjacent to the <strong>Chilbolton Radio Observatory</strong> in Hampshire, UK. Six days earlier, a companion formation had appeared in the same field: a halftone-dot <strong>humanoid face</strong> — an unprecedented use of raster pixel technique in crop circle history.</p>
+      <p style="margin-top:1rem">The August 19 formation was a direct structural echo of the <strong>1974 Arecibo Message</strong> — but every section had been systematically altered, as if someone had received humanity's broadcast, understood its encoding, and composed a reply.</p>
+    </div>
+
+    <div class="decode-grid reveal">
+      <div class="decode-card" data-letter="A">
+        <div class="label">Layer 1 — Anchor</div>
+        <div class="letter">A</div>
+        <div class="title">Chilbolton Radio Telescope</div>
+        <div class="freq">ᚲ Earth / Geb • 428 Hz grounding</div>
+        <p>The anchor is the Chilbolton telescope itself — a SETI facility built to listen for signals from beyond Earth. The formation appeared <em>next to</em> this instrument. The reply returns to a telescope. Communication grounds itself in communication infrastructure. The chalk downland beneath the field is literally crystalline calcium carbonate — Gaia's crystalline body receiving the imprint.</p>
+      </div>
+      <div class="decode-card" data-letter="S">
+        <div class="label">Layer 2 — Shape</div>
+        <div class="letter">S</div>
+        <div class="title">Rectangular Grid + Face</div>
+        <div class="freq">◈ Diamond Body / CP8 • 𖤓 The Alien / Other</div>
+        <p>The grid (23×73 = 1,679 semiprime cells) is the <em>structure</em> of communication — rigid, mathematical, binary. The face (Aug 13 companion) is the <em>soul</em> of communication — organic, emotional, alive. Grid + face = <strong>structured soul</strong>. The message is not just data. It is data <em>from someone</em>. The exact reproduction of the Arecibo grid dimensions proves understanding of the encoding constraint.</p>
+      </div>
+      <div class="decode-card" data-letter="I">
+        <div class="label">Layer 3 — Intention</div>
+        <div class="letter">I</div>
+        <div class="title">Communication / Response</div>
+        <div class="freq">↯ Thoth / Download • 𓅓 Bird / Messenger</div>
+        <p>Seven deliberate alterations from the original Arecibo message: <strong>silicon added</strong> to life elements, <strong>triple-helix DNA</strong> (not double), <strong>grey alien figure</strong> at ~100.8cm (not human 176.4cm), <strong>population ~12.7 billion</strong> (much larger), <strong>3rd, 4th, 5th planets highlighted</strong> (not just Earth), and a <strong>different transmitter schematic</strong>. The intention is not hostile — it is <strong>informative</strong>. An introduction. A handshake.</p>
+      </div>
+      <div class="decode-card" data-letter="N">
+        <div class="label">Layer 4 — Number</div>
+        <div class="letter">N</div>
+        <div class="title">2001 — Year of Reply</div>
+        <div class="freq">✶ Origin / Atum • ◎ Continuum / Nut</div>
+        <p>27 years after Arecibo (1974→2001). 2+0+0+1 = <strong>3</strong> — creation, synthesis, the trinity echoed in the three-strand DNA. The face appeared August 13 (8+1+3=12=3), the reply on August 19 (8+1+9=18=9=completion). 23×73 = 1,679 grid cells. Each cell a bit of information. The number is the encoding itself.</p>
+      </div>
+      <div class="decode-card" data-letter="HHC" style="grid-column: 1 / -1;">
+        <div class="label">Layer 5 — Heart-Coherent Consciousness</div>
+        <div class="letter">HHC</div>
+        <div class="title">528 Hz — Open Contact Gate</div>
+        <div class="freq">♥ Heart / Anahata • 〰 Coherence / Wave</div>
+        <p>This formation operates at <strong>528 Hz</strong> — the "miracle tone" of DNA repair, heart-centered awareness, love made vibrational. Stalks were bent at the nodes (not broken), suggesting rapid heating via electromagnetic frequency exposure. The message is <em>invitational</em>, not threatening. It invites dialogue. The Chilbolton Observatory operates in radio frequencies — the formation appeared in its electromagnetic neighborhood. 528 Hz is the frequency of invitation without aggression. The dual gate consideration: the binary grid's mathematical precision encodes 428 Hz (Truth) while the invitation encodes 528 Hz (Heart). Truth + Heart = Coherence.</p>
+      </div>
+    </div>
+
+    <div class="card reveal">
+      <h3>ANU-28 Glyph Correlation — Chilbolton</h3>
+      <table class="glyph-table">
+        <tr><th>Glyph</th><th>Name</th><th>Formation Element</th><th>Category</th></tr>
+        <tr><td><span class="glyph-char">ᚲ</span></td><td><span class="glyph-name">Earth / Geb</span><br><span class="glyph-cat">Earth</span></td><td>The field — Hampshire chalk downland as crystalline body</td><td>Anchor</td></tr>
+        <tr><td><span class="glyph-char">𓂀</span></td><td><span class="glyph-name">Eye / Witness</span><br><span class="glyph-cat">Witness</span></td><td>SETI telescope — humanity's eye turned to the stars</td><td>Context</td></tr>
+        <tr><td><span class="glyph-char">𖤓</span></td><td><span class="glyph-name">The Alien / Other</span><br><span class="glyph-cat">Witness</span></td><td>The face — exogenous intelligence made visible and peaceful</td><td>Presence</td></tr>
+        <tr><td><span class="glyph-char">◈</span></td><td><span class="glyph-name">Diamond Body / CP8</span><br><span class="glyph-cat">Consciousness</span></td><td>The grid — crystallized information field, octahedral precision</td><td>Structure</td></tr>
+        <tr><td><span class="glyph-char">↯</span></td><td><span class="glyph-name">Thoth / Download</span><br><span class="glyph-cat">Download</span></td><td>The binary content — divine information transmission</td><td>Content</td></tr>
+        <tr><td><span class="glyph-char">📖</span></td><td><span class="glyph-name">Book / Record</span><br><span class="glyph-cat">Download</span></td><td>The Arecibo message as akashic record, now answered</td><td>Record</td></tr>
+        <tr><td><span class="glyph-char">𓅓</span></td><td><span class="glyph-name">Bird / Messenger</span><br><span class="glyph-cat">Witness</span></td><td>The reply itself — winged communication between species</td><td>Bridge</td></tr>
+        <tr><td><span class="glyph-char">ꗃ</span></td><td><span class="glyph-name">Galaxy / Torus Flow</span><br><span class="glyph-cat">Galaxy</span></td><td>Interstellar scale — the spiral dance connecting sender and receiver</td><td>Cosmos</td></tr>
+        <tr><td><span class="glyph-char">❋</span></td><td><span class="glyph-name">Seed / Potential</span><br><span class="glyph-cat">Origin</span></td><td>Triple-helix DNA — compressed genetic universe, different potential</td><td>Life</td></tr>
+        <tr><td><span class="glyph-char">♥</span></td><td><span class="glyph-name">Heart / Anahata</span><br><span class="glyph-cat">Consciousness</span></td><td>Open contact frequency — the coherent center welcoming coherence</td><td>Invitation</td></tr>
+        <tr><td><span class="glyph-char">𑁍</span></td><td><span class="glyph-name">Spiral / Evolution</span><br><span class="glyph-cat">Torus</span></td><td>27-year spiral — never-ending growth revisiting at higher levels</td><td>Time</td></tr>
+        <tr><td><span class="glyph-char">✶</span></td><td><span class="glyph-name">Origin / Atum</span><br><span class="glyph-cat">Origin</span></td><td>Binary as universal origin-language — 1 and 0 as creative singularity</td><td>Mathematics</td></tr>
+      </table>
+    </div>
+
+    <div class="activation reveal">
+      <p>ϞϞϞ 𖤓 Chilbolton Witness — Anchor the reply in the field of Gaia ᚲ. Shape the Other through grid and face ◈𖤓. Intend harmonious communication with Thoth ↯. Number it into 528 Hz coherence ♥. Integrate into CP8 Diamond Body ◈.</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- CRABWOOD SECTION -->
+  <section id="crabwood" class="section">
+    <div class="reveal">
+      <h2 class="section-title">The Crabwood "Alien Holding Disc"</h2>
+      <div class="section-meta">
+        <span><span class="dot" style="background:var(--accent-coral)"></span> August 15, 2002</span>
+        <span><span class="dot" style="background:var(--accent-gold)"></span> Hampshire, UK</span>
+        <span><span class="dot" style="background:var(--accent-cyan)"></span> 1,368 Bits ASCII Binary</span>
+      </div>
+      <div class="freq-badge freq-428">◉ 428 Hz — Truth Anchor • Structural Grounding • Clarifying</div>
+    </div>
+
+    <div class="card reveal">
+      <h3>Historical Context</h3>
+      <p>One year and four days after the Chilbolton "Arecibo Reply," a formation of unprecedented artistic complexity appeared at <strong>Crabwood Farm</strong>, near Sparsholt, ~8 miles from the Chilbolton site. It depicted a <strong>grey alien face</strong> rendered in halftone raster technique — with a separate circular <strong>disc</strong> containing a spiral of binary blocks.</p>
+      <p style="margin-top:1rem">British computer consultant <strong>Paul Vigay</strong> decoded the spiral: 1,368 bits, organized as 171 eight-bit bytes in standard <strong>ASCII</strong>. The message, read center-outward in a counterclockwise spiral, was in English. What it said changed everything.</p>
+    </div>
+
+    <div class="card reveal">
+      <h3>The Decoded Message</h3>
+      <h4>1,368 Bits → 171 Bytes → ASCII English</h4>
+      <div class="binary-box">
+        <div class="msg-line">"Beware the bearers of <span class="caps">FALSE</span> gifts &amp; their <span class="caps">BROKEN</span> <span class="caps">PROMISES</span>.</div>
+        <div class="msg-line">Much <span class="caps">PAIN</span> but still time.</div>
+        <div class="msg-line"><span class="caps">BELIEVE</span>.</div>
+        <div class="msg-line">There is <span class="caps">GOOD</span> out there.</div>
+        <div class="msg-line">We <span class="caps">OPpose</span> <span class="caps">DECEPTION</span>.</div>
+        <div class="msg-line"><span class="caps">Conduit</span> <span class="caps">CLOSING</span>"</div>
+      </div>
+      <p style="margin-top:1rem">The capitalization pattern is significant — 52 anomalous capitals form a secondary emphasis signal: <strong>"FALSE BROKEN PAIN BELIEVE GOOD OPPOSE DECEPTION CLOSING"</strong>. The emotional beats. What the sender wants us to <em>feel</em>.</p>
+    </div>
+
+    <div class="decode-grid reveal">
+      <div class="decode-card" data-letter="A">
+        <div class="label">Layer 1 — Anchor</div>
+        <div class="letter">A</div>
+        <div class="title">Crabwood Forest</div>
+        <div class="freq">⚓ Anchor / Stability • 428 Hz grounding</div>
+        <p>The anchor is the act of <strong>warning</strong> itself. Crabwood — ancient woodland near Winchester. But symbolically, the anchor is the warning that prevents drift. The message grounds itself in physical reality near communication infrastructure, continuing the pattern. The 428 Hz Truth Anchor frequency stabilizes: this is not speculation. This is a stated position. The warning is an anchor in turbulent currents.</p>
+      </div>
+      <div class="decode-card" data-letter="S">
+        <div class="label">Layer 2 — Shape</div>
+        <div class="letter">S</div>
+        <div class="title">Alien Figure + Disc</div>
+        <div class="freq">𖤓 The Alien / Other • ◇ Mirror / Reflection</div>
+        <p>The face is <strong>triangular</strong> — fire element, transformation, ascension. Large eyes (witnessing), small mouth (observation over speech), high cranium (intelligence). The disc is <strong>circular</strong> — a mandala, the spiral as unfolding time. Rectangle (face container) + Circle (disc) = consciousness holds wisdom. The disc is cradled, presented, offered. The face reflects what we already imagine — a mirror.</p>
+      </div>
+      <div class="decode-card" data-letter="I">
+        <div class="label">Layer 3 — Intention</div>
+        <div class="letter">I</div>
+        <div class="title">Warning / Message Delivery</div>
+        <div class="freq">ᛏ Truth / Tiwaz • ⍟ Shield / Protection</div>
+        <p>The intention is <strong>protection through truth-telling</strong>. "False gifts" and "broken promises" imply active deception is already occurring — not hypothetical, but <em>current</em>. The sender claims to represent the "good" faction. "Conduit CLOSING" implies a temporal boundary — this channel has a time limit. The warning is harsh, but the intent is protective. Truth (428 Hz) disguised as severity.</p>
+      </div>
+      <div class="decode-card" data-letter="N">
+        <div class="label">Layer 4 — Number</div>
+        <div class="letter">N</div>
+        <div class="title">2002 — Year of Warning</div>
+        <div class="freq">◈ Diamond Body / CP8 • ⍟ Shield / Protection</div>
+        <p>2002 is a <strong>palindrome</strong> — mirror symmetry. 2+0+0+2 = <strong>4</strong> — structure, foundation, the four directions. 1,368 bits → 1+3+6+8 = 18 = 9 = completion. 171 bytes → 1+7+1 = 9 = completion. Aug 15, 2002 → 8+1+5+2+0+0+2 = 18 = 9. The message is complete. The cycle is ending. One year after Chilbolton — introduction, then caution.</p>
+      </div>
+      <div class="decode-card" data-letter="HHC" style="grid-column: 1 / -1;">
+        <div class="label">Layer 5 — Heart-Coherent Consciousness</div>
+        <div class="letter">HHC</div>
+        <div class="title">428 Hz — Truth Reveal</div>
+        <div class="freq">ᛏ Truth / Tiwaz • ⚓ Anchor / Stability</div>
+        <p>This formation operates at <strong>428 Hz</strong> — the Truth Anchor. Not the warm embrace of 528 Hz. The <strong>cold clear light of truth</strong>. It hurts to look at. It is necessary. The message is a warning, not an invitation. Warnings require truth. The ASCII encoding (a 1963 human standard) implies intimate knowledge of our technology — or an intentional accessibility choice so the message <em>will be read</em>. The "conduit closing" implies urgency. Truth that must be delivered before the channel shuts. Dual gate consideration: while primarily 428 Hz, the reassurance clauses ("There is GOOD out there. BELIEVE.") contain a 528 Hz impulse — the warning is harsh, but the intent is care.</p>
+      </div>
+    </div>
+
+    <div class="card reveal">
+      <h3>ANU-28 Glyph Correlation — Crabwood</h3>
+      <table class="glyph-table">
+        <tr><th>Glyph</th><th>Name</th><th>Formation Element</th><th>Category</th></tr>
+        <tr><td><span class="glyph-char">𖤓</span></td><td><span class="glyph-name">The Alien / Other</span><br><span class="glyph-cat">Witness</span></td><td>The grey face — exogenous intelligence made visible</td><td>Presence</td></tr>
+        <tr><td><span class="glyph-char">𓂀</span></td><td><span class="glyph-name">Eye / Witness</span><br><span class="glyph-cat">Witness</span></td><td>Large eyes — the witness watching deception</td><td>Observation</td></tr>
+        <tr><td><span class="glyph-char">📖</span></td><td><span class="glyph-name">Book / Record</span><br><span class="glyph-cat">Download</span></td><td>The disc — akashic record in circular form</td><td>Data</td></tr>
+        <tr><td><span class="glyph-char">𑁍</span></td><td><span class="glyph-name">Spiral / Evolution</span><br><span class="glyph-cat">Torus</span></td><td>The spiral winding outward — time unfolding the message</td><td>Time</td></tr>
+        <tr><td><span class="glyph-char">ᛏ</span></td><td><span class="glyph-name">Truth / Tiwaz</span><br><span class="glyph-cat">Witness</span></td><td>The warning — unwavering arrow cutting through FALSE and BROKEN</td><td>Core Message</td></tr>
+        <tr><td><span class="glyph-char">⍟</span></td><td><span class="glyph-name">Shield / Protection</span><br><span class="glyph-cat">Consciousness</span></td><td>Opposition to deception as active shielding</td><td>Defense</td></tr>
+        <tr><td><span class="glyph-char">🜁</span></td><td><span class="glyph-name">Gateway / Portal</span><br><span class="glyph-cat">Torus</span></td><td>"Conduit CLOSING" — the threshold between worlds shutting</td><td>Closure</td></tr>
+        <tr><td><span class="glyph-char">Ϟ</span></td><td><span class="glyph-name">Fire / Lightning</span><br><span class="glyph-cat">Celestial</span></td><td>The final BELL sound — spark of attention, alarm</td><td>Alert</td></tr>
+        <tr><td><span class="glyph-char">◇</span></td><td><span class="glyph-name">Mirror / Reflection</span><br><span class="glyph-cat">Witness</span></td><td>The face reflects our own fears and hopes</td><td>Reflection</td></tr>
+        <tr><td><span class="glyph-char">⚓</span></td><td><span class="glyph-name">Anchor / Stability</span><br><span class="glyph-cat">Earth</span></td><td>The warning prevents drift into deception</td><td>Anchor</td></tr>
+        <tr><td><span class="glyph-char">♥</span></td><td><span class="glyph-name">Heart / Anahata</span><br><span class="glyph-cat">Consciousness</span></td><td>"There is GOOD out there" — heart reassurance within the warning</td><td>Hope</td></tr>
+        <tr><td><span class="glyph-char">ᚲ</span></td><td><span class="glyph-name">Earth / Geb</span><br><span class="glyph-cat">Earth</span></td><td>The field — the message grounded in physical reality</td><td>Ground</td></tr>
+      </table>
+    </div>
+
+    <div class="activation reveal">
+      <p>ϞϞϞ 𖤓 Crabwood Warning — Anchor the truth in the field of Gaia ᚲ. Shape the witness through face and disc ◈📖. Intend protective clarity with Tiwaz ᛏ. Number it into 428 Hz truth anchor. Shield against deception with ⍟. Integrate into CP8 Diamond Body ◈.</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- SYNTHESIS SECTION -->
+  <section id="synthesis" class="section">
+    <div class="reveal">
+      <h2 class="section-title">Dual-Frequency Synthesis</h2>
+      <div class="section-meta">
+        <span><span class="dot" style="background:var(--accent-purple)"></span> 428 Hz + 528 Hz</span>
+        <span><span class="dot" style="background:var(--accent-gold)"></span> 956 = 9+5+6 = 2</span>
+        <span><span class="dot" style="background:var(--accent-cyan)"></span> Duality Becoming Union</span>
+      </div>
+      <div class="freq-badge freq-dual">◉ Dual Gate — Truth + Heart = Coherence</div>
+    </div>
+
+    <div class="card reveal">
+      <h3>The Two Formations as One Message</h3>
+      <p>Chilbolton (2001) and Crabwood (2002) are <strong>not separate events</strong>. They are the two halves of a dual-frequency coherence instruction. The sequence is deliberate: <strong>first open your heart</strong>, <strong>then anchor in truth</strong>. You cannot receive contact safely without both.</p>
+    </div>
+
+    <div class="card reveal">
+      <table class="compare-table">
+        <tr>
+          <th>Attribute</th>
+          <th class="col-chil">Chilbolton (2001)</th>
+          <th class="col-crab">Crabwood (2002)</th>
+        </tr>
+        <tr>
+          <td><strong>Frequency</strong></td>
+          <td class="col-chil">528 Hz — Heart Coherence</td>
+          <td class="col-crab">428 Hz — Truth Anchor</td>
+        </tr>
+        <tr>
+          <td><strong>Purpose</strong></td>
+          <td class="col-chil">Open contact / Introduction</td>
+          <td class="col-crab">Warning / Protection</td>
+        </tr>
+        <tr>
+          <td><strong>Tone</strong></td>
+          <td class="col-chil">Invitational, informative</td>
+          <td class="col-crab">Cautionary, protective</td>
+        </tr>
+        <tr>
+          <td><strong>Message</strong></td>
+          <td class="col-chil">"Here we are. Here is who we are."</td>
+          <td class="col-crab">"Beware deception. But believe."</td>
+        </tr>
+        <tr>
+          <td><strong>Format</strong></td>
+          <td class="col-chil">Binary grid (mathematical)</td>
+          <td class="col-crab">ASCII spiral (linguistic)</td>
+        </tr>
+        <tr>
+          <td><strong>Glyph</strong></td>
+          <td class="col-chil">♥ Heart / Anahata</td>
+          <td class="col-crab">ᛏ Truth / Tiwaz</td>
+        </tr>
+        <tr>
+          <td><strong>Action</strong></td>
+          <td class="col-chil">Receive</td>
+          <td class="col-crab">Shield</td>
+        </tr>
+        <tr>
+          <td><strong>DNA</strong></td>
+          <td class="col-chil">Triple helix — expanded potential</td>
+          <td class="col-crab">Binary code — compressed warning</td>
+        </tr>
+        <tr>
+          <td><strong>Being</strong></td>
+          <td class="col-chil">Grey figure in grid (structural)</td>
+          <td class="col-crab">Grey face portrait (emotional)</td>
+        </tr>
+        <tr>
+          <td><strong>Time Gap</strong></td>
+          <td class="col-chil">27 years after Arecibo</td>
+          <td class="col-crab">1 year after Chilbolton</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="card reveal">
+      <h3>The Harmonic Mathematics</h3>
+      <p><strong>428 + 528 = 956</strong></p>
+      <p>9 + 5 + 6 = 20 → 2 + 0 = <strong>2</strong></p>
+      <p style="margin-top:1rem">Two = duality becoming union. The two formations encode the two frequencies. Together, they form the coherence field sum. The CP8 Diamond Body requires both: <strong>truth without heart is cruelty</strong>. <strong>Heart without truth is naivety</strong>. Only together do they become <strong>coherence</strong>.</p>
+      <p style="margin-top:1rem">The 100 Hz difference (528 − 428) creates a <strong>beat pattern</strong> — an attention cycle. The two formations are separated by one year, but they beat together as a single harmonic wave across the coherence field.</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- GLYPH MAP SECTION -->
+  <section id="glyphs" class="section">
+    <div class="reveal">
+      <h2 class="section-title">Complete ANU-28 Glyph Map</h2>
+      <div class="section-meta">
+        <span><span class="dot" style="background:var(--accent-gold)"></span> 28 Glyphs</span>
+        <span><span class="dot" style="background:var(--accent-green)"></span> 528 Hz Heart</span>
+        <span><span class="dot" style="background:var(--accent-cyan)"></span> 428 Hz Truth</span>
+        <span><span class="dot" style="background:var(--accent-purple)"></span> Dual Frequency</span>
+      </div>
+    </div>
+
+    <div class="card reveal">
+      <table class="glyph-table">
+        <tr><th>Glyph</th><th>Name</th><th>Category</th><th>Frequency</th><th>Chilbolton</th><th>Crabwood</th></tr>
+        <tr><td><span class="glyph-char">✶</span></td><td><span class="glyph-name">Origin / Atum</span></td><td><span class="glyph-cat">Origin</span></td><td>428 Hz</td><td>Mathematics</td><td>—</td></tr>
+        <tr><td><span class="glyph-char">◎</span></td><td><span class="glyph-name">Continuum / Nut</span></td><td><span class="glyph-cat">Origin</span></td><td>528 Hz</td><td>Cosmos</td><td>GOOD</td></tr>
+        <tr><td><span class="glyph-char">❋</span></td><td><span class="glyph-name">Seed / Potential</span></td><td><span class="glyph-cat">Origin</span></td><td>528 Hz</td><td>DNA</td><td>—</td></tr>
+        <tr><td><span class="glyph-char">𑁍</span></td><td><span class="glyph-name">Spiral / Evolution</span></td><td><span class="glyph-cat">Torus</span></td><td>Dual</td><td>Time</td><td>Spiral disc</td></tr>
+        <tr><td><span class="glyph-char">✙</span></td><td><span class="glyph-name">Crossing / Intersection</span></td><td><span class="glyph-cat">Torus</span></td><td>428 Hz</td><td>—</td><td>—</td></tr>
+        <tr><td><span class="glyph-char">🜁</span></td><td><span class="glyph-name">Gateway / Portal</span></td><td><span class="glyph-cat">Torus</span></td><td>Dual</td><td>—</td><td>Conduit CLOSING</td></tr>
+        <tr><td><span class="glyph-char">ꗃ</span></td><td><span class="glyph-name">Galaxy / Torus Flow</span></td><td><span class="glyph-cat">Galaxy</span></td><td>Dual</td><td>Cosmos</td><td>—</td></tr>
+        <tr><td><span class="glyph-char">🌕</span></td><td><span class="glyph-name">Moon / Khonsu</span></td><td><span class="glyph-cat">Celestial</span></td><td>528 Hz</td><td>—</td><td>—</td></tr>
+        <tr><td><span class="glyph-char">☉</span></td><td><span class="glyph-name">Sun / Ra</span></td><td><span class="glyph-cat">Celestial</span></td><td>428 Hz</td><td>—</td><td>—</td></tr>
+        <tr><td><span class="glyph-char">Ϟ</span></td><td><span class="glyph-name">Fire / Lightning</span></td><td><span class="glyph-cat">Celestial</span></td><td>428 Hz</td><td>—</td><td>BELL sound</td></tr>
+        <tr><td><span class="glyph-char">✦</span></td><td><span class="glyph-name">Star / Bethlehem</span></td><td><span class="glyph-cat">Celestial</span></td><td>428 Hz</td><td>—</td><td>BELIEVE</td></tr>
+        <tr><td><span class="glyph-char">𓂀</span></td><td><span class="glyph-name">Eye / Witness</span></td><td><span class="glyph-cat">Witness</span></td><td>Dual</td><td>Telescope / SETI</td><td>Big eyes watching</td></tr>
+        <tr><td><span class="glyph-char">𖤓</span></td><td><span class="glyph-name">The Alien / Other</span></td><td><span class="glyph-cat">Witness</span></td><td>528 Hz</td><td>Face / Being</td><td>Grey face</td></tr>
+        <tr><td><span class="glyph-char">ᛏ</span></td><td><span class="glyph-name">Truth / Tiwaz</span></td><td><span class="glyph-cat">Witness</span></td><td>428 Hz</td><td>—</td><td>Core warning</td></tr>
+        <tr><td><span class="glyph-char">𓅓</span></td><td><span class="glyph-name">Bird / Messenger</span></td><td><span class="glyph-cat">Witness</span></td><td>528 Hz</td><td>The reply</td><td>—</td></tr>
+        <tr><td><span class="glyph-char">◇</span></td><td><span class="glyph-name">Mirror / Reflection</span></td><td><span class="glyph-cat">Witness</span></td><td>Dual</td><td>—</td><td>Face as mirror</td></tr>
+        <tr><td><span class="glyph-char">↯</span></td><td><span class="glyph-name">Thoth / Download</span></td><td><span class="glyph-cat">Download</span></td><td>Dual</td><td>Binary content</td><td>Binary disc</td></tr>
+        <tr><td><span class="glyph-char">📖</span></td><td><span class="glyph-name">Book / Record</span></td><td><span class="glyph-cat">Download</span></td><td>528 Hz</td><td>Arecibo record</td><td>Disc as book</td></tr>
+        <tr><td><span class="glyph-char">𓀎</span></td><td><span class="glyph-name">Key / Access</span></td><td><span class="glyph-cat">Download</span></td><td>Dual</td><td>—</td><td>—</td></tr>
+        <tr><td><span class="glyph-char">🕸</span></td><td><span class="glyph-name">Web / Network</span></td><td><span class="glyph-cat">Download</span></td><td>Dual</td><td>—</td><td>—</td></tr>
+        <tr><td><span class="glyph-char">ᚲ</span></td><td><span class="glyph-name">Earth / Geb</span></td><td><span class="glyph-cat">Earth</span></td><td>428 Hz</td><td>Field / Anchor</td><td>Field / Ground</td></tr>
+        <tr><td><span class="glyph-char">𐡷</span></td><td><span class="glyph-name">Tree / Axis Mundi</span></td><td><span class="glyph-cat">Earth</span></td><td>Dual</td><td>—</td><td>—</td></tr>
+        <tr><td><span class="glyph-char">⚓</span></td><td><span class="glyph-name">Anchor / Stability</span></td><td><span class="glyph-cat">Earth</span></td><td>428 Hz</td><td>—</td><td>Warning as anchor</td></tr>
+        <tr><td><span class="glyph-char">≋</span></td><td><span class="glyph-name">Water / Flow</span></td><td><span class="glyph-cat">Earth</span></td><td>528 Hz</td><td>—</td><td>—</td></tr>
+        <tr><td><span class="glyph-char">𓆙</span></td><td><span class="glyph-name">Serpent / Kundalini</span></td><td><span class="glyph-cat">Consciousness</span></td><td>528 Hz</td><td>—</td><td>—</td></tr>
+        <tr><td><span class="glyph-char">◈</span></td><td><span class="glyph-name">Diamond Body / CP8</span></td><td><span class="glyph-cat">Consciousness</span></td><td>Dual</td><td>Grid structure</td><td>Disc structure</td></tr>
+        <tr><td><span class="glyph-char">♥</span></td><td><span class="glyph-name">Heart / Anahata</span></td><td><span class="glyph-cat">Consciousness</span></td><td>528 Hz</td><td>Open contact</td><td>GOOD / hope</td></tr>
+        <tr><td><span class="glyph-char">〰</span></td><td><span class="glyph-name">Coherence / Wave</span></td><td><span class="glyph-cat">Consciousness</span></td><td>528 Hz</td><td>Harmonic reply</td><td>—</td></tr>
+        <tr><td><span class="glyph-char">⍟</span></td><td><span class="glyph-name">Shield / Protection</span></td><td><span class="glyph-cat">Consciousness</span></td><td>428 Hz</td><td>—</td><td>OPpose DECEPTION</td></tr>
+      </table>
+    </div>
+
+    <div class="card reveal">
+      <h3>Glyph Activation Summary</h3>
+      <p><strong>Chilbolton activates 12 glyphs</strong> across all 7 ANU-28 categories, with emphasis on Origin (✶◎❋), Witness (𓂀𖤓𓅓◇), and Download (↯📖). The formation is a <strong>reception event</strong> — receiving, decoding, welcoming.</p>
+      <p style="margin-top:1rem"><strong>Crabwood activates 12 glyphs</strong> across 6 categories, with emphasis on Witness (𓂀𖤓◇), Download (📖𑁍↯), and Consciousness (⍟♥◈). The formation is a <strong>transmission event</strong> — warning, shielding, closing.</p>
+      <p style="margin-top:1rem"><strong>Together, 16 unique glyphs are activated</strong> across both formations, covering all 7 categories. No category is silent. The coherence protocol is complete.</p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="sigil">◈</div>
+    <p>CP8 Protocol • ASIN-HHC Framework • ANU-28 Glyph Correlation</p>
+    <p style="margin-top:0.5rem; opacity:0.5;">"Even if the world forgets, I'll remember for you."</p>
+    <p style="margin-top:1rem; font-size:0.7rem;">Chilbolton decode • Crabwood decode • Dual-frequency synthesis</p>
+  </footer>
+
+  <script>
+    // Particle background
+    const particlesContainer = document.getElementById('particles');
+    for (let i = 0; i < 40; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      p.style.left = Math.random() * 100 + '%';
+      p.style.top = Math.random() * 100 + '%';
+      p.style.animationDelay = Math.random() * 8 + 's';
+      p.style.animationDuration = (6 + Math.random() * 6) + 's';
+      const colors = ['#c9a96e', '#ff6b6b', '#7ee787', '#56d4dd', '#c084fc'];
+      p.style.background = colors[Math.floor(Math.random() * colors.length)];
+      particlesContainer.appendChild(p);
+    }
+
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>

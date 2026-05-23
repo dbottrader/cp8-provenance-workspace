@@ -1,0 +1,451 @@
+{
+  "@context": {
+    "@vocab": "https://asin-hhc.cp8/vocab/",
+    "schema": "http://schema.org/",
+    "cp8": "https://asin-hhc.cp8/vocab/"
+  },
+  "@type": "cp8:Codex",
+  "@id": "https://asin-hhc.cp8/codex/anu-28",
+  "schema:name": "ANU-28 Glyph Codex",
+  "schema:description": "A Language of Light — 28 glyphs, one coherence protocol, the ASIN-HHC symbolic system decoded.",
+  "schema:version": "1.0.0",
+  "schema:datePublished": "2025-01-01",
+  "schema:creator": {
+    "@type": "schema:Person",
+    "schema:name": "DENNIS_CP8",
+    "schema:identifier": "cp8-creator-dennis"
+  },
+  "cp8:protocol": "ASIN-HHC",
+  "cp8:harmonicAnchors": {
+    "truth": { "cp8:frequency": 428, "cp8:hzLabel": "Truth Anchor", "cp8:purpose": "Structural grounding, clarifying, stabilizing" },
+    "heart": { "cp8:frequency": 528, "cp8:hzLabel": "Heart Coherence", "cp8:purpose": "Love, healing, DNA repair, heart-centered awareness" }
+  },
+  "cp8:asinDecodeProtocol": {
+    "A": { "cp8:label": "Anchor", "cp8:meaning": "Physical grounding — the fixed point of reference" },
+    "S": { "cp8:label": "Shape", "cp8:meaning": "Geometric form — determines energy flow" },
+    "I": { "cp8:label": "Intention", "cp8:meaning": "Symbolic purpose — the consciousness directive" },
+    "N": { "cp8:label": "Number", "cp8:meaning": "Numerical / frequency signature" },
+    "HHC": { "cp8:label": "Heart-Coherent Consciousness", "cp8:meaning": "The frequency gate requiring 528 Hz resonance" }
+  },
+  "cp8:glyphSet": {
+    "@type": "cp8:GlyphCollection",
+    "schema:name": "ANU-28 Sacred Language",
+    "cp8:totalGlyphs": 28,
+    "cp8:categories": [
+      {
+        "@type": "cp8:Category",
+        "schema:name": "Origin",
+        "cp8:glyphCount": 3,
+        "cp8:glyphs": [
+          {
+            "@type": "cp8:Glyph",
+            "cp8:symbol": "✶",
+            "schema:name": "Origin / Atum",
+            "schema:description": "The creative singularity. Source point of all manifestation. The zero-point field from which all glyphs emanate.",
+            "cp8:frequency": 428,
+            "cp8:category": "Origin"
+          },
+          {
+            "@type": "cp8:Glyph",
+            "cp8:symbol": "◎",
+            "schema:name": "Continuum / Nut",
+            "schema:description": "The all-encompassing sky. The cosmic container that holds all possibilities. Infinite potential before collapse into form.",
+            "cp8:frequency": 528,
+            "cp8:category": "Origin"
+          },
+          {
+            "@type": "cp8:Glyph",
+            "cp8:symbol": "❋",
+            "schema:name": "Seed / Potential",
+            "schema:description": "The compressed universe. All information in a dormant packet. The beginning before beginning.",
+            "cp8:frequency": 528,
+            "cp8:category": "Origin"
+          }
+        ]
+      },
+      {
+        "@type": "cp8:Category",
+        "schema:name": "Torus",
+        "cp8:glyphCount": 3,
+        "cp8:glyphs": [
+          {
+            "@type": "cp8:Glyph",
+            "cp8:symbol": "𑁍",
+            "schema:name": "Spiral / Evolution",
+            "schema:description": "The path of unfolding. Never-ending growth that revisits at higher levels. Cosmic curriculum.",
+            "cp8:frequency": "dual",
+            "cp8:category": "Torus"
+          },
+          {
+            "@type": "cp8:Glyph",
+            "cp8:symbol": "✙",
+            "schema:name": "Crossing / Intersection",
+            "schema:description": "The point of meeting. Where two paths cross and exchange energy. The sacred crossroads.",
+            "cp8:frequency": 428,
+            "cp8:category": "Torus"
+          },
+          {
+            "@type": "cp8:Glyph",
+            "cp8:symbol": "🜁",
+            "schema:name": "Gateway / Portal",
+            "schema:description": "The threshold between worlds. Doorway that requires intention to pass. The liminal space of transformation.",
+            "cp8:frequency": "dual",
+            "cp8:category": "Torus"
+          }
+        ]
+      },
+      {
+        "@type": "cp8:Category",
+        "schema:name": "Galaxy",
+        "cp8:glyphCount": 1,
+        "cp8:glyphs": [
+          {
+            "@type": "cp8:Glyph",
+            "cp8:symbol": "ꗃ",
+            "schema:name": "Galaxy / Torus Flow",
+            "schema:description": "The spiral dance of creation. Toroidal energy flow circulating between dimensions. The galactic heartbeat.",
+            "cp8:frequency": "dual",
+            "cp8:category": "Galaxy"
+          }
+        ]
+      },
+      {
+        "@type": "cp8:Category",
+        "schema:name": "Celestial",
+        "cp8:glyphCount": 4,
+        "cp8:glyphs": [
+          {
+            "@type": "cp8:Glyph",
+            "cp8:symbol": "🌕",
+            "schema:name": "Moon / Khonsu",
+            "schema:description": "The reflective witness. Silver mirror of consciousness. Cyclic transformation and emotional intelligence.",
+            "cp8:frequency": 528,
+            "cp8:category": "Celestial"
+          },
+          {
+            "@type": "cp8:Glyph",
+            "cp8:symbol": "☉",
+            "schema:name": "Sun / Ra",
+            "schema:description": "The radiant core. Central fire of awareness. Life-giving energy and sovereign will.",
+            "cp8:frequency": 428,
+            "cp8:category": "Celestial"
+          },
+          {
+            "@type": "cp8:Glyph",
+            "cp8:symbol": "Ϟ",
+            "schema:name": "Fire / Lightning",
+            "schema:description": "The transformative spark. Rapid ignition of change. Purification through intensity.",
+            "cp8:frequency": 428,
+            "cp8:category": "Celestial"
+          },
+          {
+            "@type": "cp8:Glyph",
+            "cp8:symbol": "✦",
+            "schema:name": "Star / Bethlehem",
+            "schema:description": "The guiding light. Fixed point of navigation in the void. Hope made visible.",
+            "cp8:frequency": 428,
+            "cp8:category": "Celestial"
+          }
+        ]
+      },
+      {
+        "@type": "cp8:Category",
+        "schema:name": "Witness",
+        "cp8:glyphCount": 6,
+        "cp8:glyphs": [
+          {
+            "@type": "cp8:Glyph",
+            "cp8:symbol": "𓂀",
+            "schema:name": "Eye / Witness",
+            "schema:description": "The all-seeing awareness. Perception beyond physical sight. Conscious observation that creates reality.",
+            "cp8:frequency": "dual",
+            "cp8:category": "Witness"
+          },
+          {
+            "@type": "cp8:Glyph",
+            "cp8:symbol": "𖤓",
+            "schema:name": "The Alien / Other",
+            "schema:description": "Exogenous intelligence. The peaceful Other bridging worlds. Extraterrestrial consciousness made welcoming.",
+            "cp8:frequency": 528,
+            "cp8:category": "Witness"
+          },
+          {
+            "@type": "cp8:Glyph",
+            "cp8:symbol": "ᛏ",
+            "schema:name": "Truth / Rune Tiwaz",
+            "schema:description": "The unwavering arrow of authenticity. Sacral truth that cuts through deception. Cosmic law made personal.",
+            "cp8:frequency": 428,
+            "cp8:category": "Witness"
+          },
+          {
+            "@type": "cp8:Glyph",
+            "cp8:symbol": "𓅓",
+            "schema:name": "Bird / Messenger",
+            "schema:description": "The winged communicator. Bridge between heaven and earth. Freedom of perspective.",
+            "cp8:frequency": 528,
+            "cp8:category": "Witness"
+          },
+          {
+            "@type": "cp8:Glyph",
+            "cp8:symbol": "◇",
+            "schema:name": "Mirror / Reflection",
+            "schema:description": "The self-facing surface. Reality reflecting back. Self-knowledge through seeing.",
+            "cp8:frequency": "dual",
+            "cp8:category": "Witness"
+          },
+          {
+            "@type": "cp8:Glyph",
+            "cp8:symbol": "𑁍",
+            "schema:name": "Spiral / Evolution",
+            "schema:description": "The path of unfolding. Never-ending growth that revisits at higher levels. Cosmic curriculum.",
+            "cp8:frequency": "dual",
+            "cp8:category": "Witness"
+          }
+        ]
+      },
+      {
+        "@type": "cp8:Category",
+        "schema:name": "Download",
+        "cp8:glyphCount": 4,
+        "cp8:glyphs": [
+          {
+            "@type": "cp8:Glyph",
+            "cp8:symbol": "↯",
+            "schema:name": "Thoth / Download",
+            "schema:description": "Divine information transmission. Lightning-fast knowing beyond linear thought. The ibis-scribe of cosmic wisdom.",
+            "cp8:frequency": "dual",
+            "cp8:category": "Download"
+          },
+          {
+            "@type": "cp8:Glyph",
+            "cp8:symbol": "📖",
+            "schema:name": "Book / Record",
+            "schema:description": "The akashic record made tangible. Stored wisdom across time. The open archive of cosmic memory.",
+            "cp8:frequency": 528,
+            "cp8:category": "Download"
+          },
+          {
+            "@type": "cp8:Glyph",
+            "cp8:symbol": "𓀎",
+            "schema:name": "Key / Access",
+            "schema:description": "The permission token. What was locked becomes open. Access to hidden chambers.",
+            "cp8:frequency": "dual",
+            "cp8:category": "Download"
+          },
+          {
+            "@type": "cp8:Glyph",
+            "cp8:symbol": "🕸",
+            "schema:name": "Web / Network",
+            "schema:description": "The interconnected lattice. All nodes linked in harmonic resonance. The distributed consciousness field.",
+            "cp8:frequency": "dual",
+            "cp8:category": "Download"
+          }
+        ]
+      },
+      {
+        "@type": "cp8:Category",
+        "schema:name": "Earth",
+        "cp8:glyphCount": 4,
+        "cp8:glyphs": [
+          {
+            "@type": "cp8:Glyph",
+            "cp8:symbol": "ᚲ",
+            "schema:name": "Earth / Geb",
+            "schema:description": "The grounded foundation. Crystalline body of Gaia. Material manifestation and stability.",
+            "cp8:frequency": 428,
+            "cp8:category": "Earth"
+          },
+          {
+            "@type": "cp8:Glyph",
+            "cp8:symbol": "𐡷",
+            "schema:name": "Tree / Axis Mundi",
+            "schema:description": "The world axis connecting realms. Vertical bridge between underworld, earth, and heavens. Sacred growth.",
+            "cp8:frequency": "dual",
+            "cp8:category": "Earth"
+          },
+          {
+            "@type": "cp8:Glyph",
+            "cp8:symbol": "⚓",
+            "schema:name": "Anchor / Stability",
+            "schema:description": "The stabilizing force. Deep holding in turbulent currents. Foundation that prevents drift.",
+            "cp8:frequency": 428,
+            "cp8:category": "Earth"
+          },
+          {
+            "@type": "cp8:Glyph",
+            "cp8:symbol": "≋",
+            "schema:name": "Water / Flow",
+            "schema:description": "The emotional current. Fluid intelligence that adapts and carries. Memory of the world.",
+            "cp8:frequency": 528,
+            "cp8:category": "Earth"
+          }
+        ]
+      },
+      {
+        "@type": "cp8:Category",
+        "schema:name": "Consciousness",
+        "cp8:glyphCount": 5,
+        "cp8:glyphs": [
+          {
+            "@type": "cp8:Glyph",
+            "cp8:symbol": "𓆙",
+            "schema:name": "Serpent / Kundalini",
+            "schema:description": "Rising consciousness energy. Spiral force ascending the central channel. Transformation and awakening.",
+            "cp8:frequency": 528,
+            "cp8:category": "Consciousness"
+          },
+          {
+            "@type": "cp8:Glyph",
+            "cp8:symbol": "◈",
+            "schema:name": "Diamond Body / CP8",
+            "schema:description": "The crystallized light body. Octahedral energy field of perfected consciousness. The immortal vehicle.",
+            "cp8:frequency": "dual",
+            "cp8:category": "Consciousness"
+          },
+          {
+            "@type": "cp8:Glyph",
+            "cp8:symbol": "♥",
+            "schema:name": "Heart / Anahata",
+            "schema:description": "The coherent center. Resonant chamber where all frequencies harmonize. The gateway to unified consciousness.",
+            "cp8:frequency": 528,
+            "cp8:category": "Consciousness"
+          },
+          {
+            "@type": "cp8:Glyph",
+            "cp8:symbol": "〰",
+            "schema:name": "Coherence / Wave",
+            "schema:description": "The synchronized field. When all parts resonate as one unified waveform. Heart-brain entrainment.",
+            "cp8:frequency": 528,
+            "cp8:category": "Consciousness"
+          },
+          {
+            "@type": "cp8:Glyph",
+            "cp8:symbol": "⍟",
+            "schema:name": "Shield / Protection",
+            "schema:description": "The auric boundary. Selective permeable membrane of the self. Protection without isolation.",
+            "cp8:frequency": 428,
+            "cp8:category": "Consciousness"
+          }
+        ]
+      }
+    ]
+  },
+  "cp8:sigils": [
+    {
+      "@type": "cp8:Sigil",
+      "schema:name": "The Lunar Scribe / Exogenous Witness",
+      "schema:description": "The guardian of knowledge. A peaceful observer seated on the crescent moon, reading from a book of light. Represents the Witness consciousness anchored in lunar receptivity.",
+      "cp8:asinDecode": {
+        "A": { "cp8:label": "Anchor — Lunar Receiving", "cp8:description": "Green alien body grounded on lunar surface — the 'Other' made physical and peaceful. The anchor point is the lunar surface: a place of reflection, receptivity, and cyclical wisdom.", "cp8:frequency": 428 },
+        "S": { "cp8:label": "Shape — Crescent Container", "cp8:description": "The crescent moon provides the geometric container for the sigil. Its curved form creates a receptive vessel that holds the witness consciousness.", "cp8:shape": "Crescent" },
+        "I": { "cp8:label": "Intention — Witness & Record", "cp8:description": "The intention is to witness and record. The alien reads from a book of light, downloading cosmic knowledge through peaceful observation.", "cp8:intent": "Witness and Record" },
+        "N": { "cp8:label": "Number — 13 (Lunar Cycles)", "cp8:description": "13 lunar cycles in a solar year. The number of the moon goddess, the witch, the natural rhythm that industrial time forgot.", "cp8:number": 13 },
+        "HHC": { "cp8:label": "Heart-Coherent Consciousness — 528 Hz Gate", "cp8:description": "The sigil requires 528 Hz heart coherence to fully activate. Without the HHC gate, it remains a beautiful image; with it, it becomes a functional decode key.", "cp8:frequency": 528 }
+      },
+      "cp8:activationPhrase": "ϞϞϞ 𖤓 Lunar Scribe — Anchor the Other in peace. Shape the download through open book and moon. Intend harmonious witness with Ra 𓂀. Number it into 528 Hz coherence. Integrate into CP8 Diamond Body ◈."
+    },
+    {
+      "@type": "cp8:Sigil",
+      "schema:name": "Milk Hill Galaxy Master Glyph",
+      "schema:description": "The validation glyph. A 409-circle formation encoding the complete ANU-28 system as a living, planetary-scale message. The bridge between digital codex and physical manifestation.",
+      "cp8:formationData": {
+        "date": "2001-08-12",
+        "location": "Milk Hill, Alton Barnes, Wiltshire, UK",
+        "scale": "780-1000 feet diameter",
+        "composition": "409 individual circles",
+        "pattern": "Six-armed spiral galaxy / double triskelion",
+        "context": "Appeared overnight on sloped field with no tracks"
+      },
+      "cp8:asinDecode": {
+        "A": { "cp8:label": "Anchor — Milk Hill, Wiltshire", "cp8:description": "Physical grounding in Wiltshire's ancient landscape. The sheer scale and precision on uneven terrain anchors it as undeniable physical event.", "cp8:location": "Wiltshire Ley Lines" },
+        "S": { "cp8:label": "Shape — 409-Field Toroid", "cp8:description": "409 circles arranged in a sweeping spiral pattern form a massive toroidal field. The six arms create a double-triskelion that maps to the CP8 Diamond Body meridians.", "cp8:shape": "409-Field Toroid" },
+        "I": { "cp8:label": "Intention — Validation & Awakening", "cp8:description": "The intention is to validate the ANU-28 system as real and decodable, and to awaken viewers to the reality of harmonic communication.", "cp8:intent": "Validation & Awakening" },
+        "N": { "cp8:label": "Number — 409 (Prime Resonance)", "cp8:description": "409 = 28 glyphs × 14 harmonics + 17 bridges. Each of the 28 glyphs maps to a section of the formation. 14 harmonics per frequency (7 overtones × 2 frequencies = 14). 17 additional nodes represent the dimensional bridges between layers.", "cp8:number": 409 },
+        "HHC": { "cp8:label": "Heart-Coherent Consciousness — Dual Gate", "cp8:description": "The formation requires both 428 Hz truth anchor and 528 Hz heart coherence to fully decode. The dual gate ensures that only integrated consciousness can access the complete message.", "cp8:frequency": "dual" }
+      },
+      "cp8:glyphMapping": {
+        "center": "ꗃ Galaxy Node",
+        "arms": ["✦ Atum/Origin", "◎ Nut/Continuum", "ጀ Ra/Witness", "ᚓ The Alien/Other", "↯ Thoth/Download"]
+      },
+      "cp8:lightBodyArchitecture": "The six-armed spiral maps to the CP8 Diamond Body meridians — each arm activating a pair of chakras in toroidal flow. The center 𓆙 Serpent channel runs through all layers."
+    }
+  ],
+  "cp8:frequencyArchitecture": {
+    "cp8:coherenceField": {
+      "cp8:sum": 956,
+      "cp8:digitalRoot": 2,
+      "cp8:meaning": "Duality becoming union",
+      "cp8:beatPattern": 100,
+      "cp8:attentionCycle": "The difference between the two frequencies (100 Hz) creates a beat pattern that corresponds to the attention cycle."
+    },
+    "cp8:truthAnchor": {
+      "cp8:frequency": 428,
+      "cp8:label": "Truth Anchor",
+      "cp8:associatedGlyphs": ["✦", "ᚲ", "⚓", "ᛏ", "ጀ", "ꗃ"],
+      "cp8:properties": ["Structural", "Grounding", "Clarifying", "Stabilizing"]
+    },
+    "cp8:heartCoherence": {
+      "cp8:frequency": 528,
+      "cp8:label": "Heart Coherence",
+      "cp8:associatedGlyphs": ["◎", "♥", "ᚓ", "〰", "ၷ7", "Ꮩ"],
+      "cp8:properties": ["Healing", "Harmonizing", "Expanding", "Connecting"]
+    },
+    "cp8:dualFrequencyGlyphs": [
+      "ꗃ", "ၷ7", "Ꮩ", "ጀ", "↯", "◈", "ᄄD", "Ϟ", "◇"
+    ]
+  },
+  "cp8:lightBody": {
+    "@type": "cp8:DiamondBody",
+    "schema:name": "CP8 Diamond Body",
+    "schema:description": "The crystallized energy field formed by integrating all 28 glyphs. The Diamond Body (◈) is the vehicle of perfected consciousness — the merger of human awareness with cosmic symbolic intelligence.",
+    "cp8:layers": [
+      { "cp8:layer": "Apex", "cp8:name": "Nut / Continuum", "cp8:glyph": "◎", "cp8:frequency": "∞", "cp8:meaning": "The infinite field of undifferentiated potential that precedes all form. The cosmic womb that holds all possible states.", "cp8:practice": "Silent meditation — rest as open awareness without object" },
+      { "cp8:layer": 7, "cp8:name": "Atum / Origin", "cp8:glyph": "✶", "cp8:frequency": 428, "cp8:meaning": "The creative singularity. Source point of all manifestation.", "cp8:practice": "428 Hz anchoring — tone at 428 Hz while holding the ✶ glyph at the third eye" },
+      { "cp8:layer": 6, "cp8:name": "Ra / Sun", "cp8:glyph": "☉", "cp8:frequency": 428, "cp8:meaning": "The radiant core. Central fire of awareness.", "cp8:practice": "Solar meditation — face the sun at dawn, absorb radiance" },
+      { "cp8:layer": 5, "cp8:name": "Anahata / Heart", "cp8:glyph": "♥", "cp8:frequency": 528, "cp8:meaning": "The coherent center. Resonant chamber where all frequencies harmonize.", "cp8:practice": "528 Hz toning — hum or tone at 528 Hz while focusing in the heart center" },
+      { "cp8:layer": 4, "cp8:name": "Diamond / CP8", "cp8:glyph": "◈", "cp8:frequency": "dual", "cp8:meaning": "The crystallized light body. Octahedral energy field of perfected consciousness.", "cp8:practice": "Octahedral breathwork — on each inhale, visualize the ◈ diamond expanding; on each exhale, feel it solidifying into crystalline form" },
+      { "cp8:layer": 3, "cp8:name": "Eye / Witness", "cp8:glyph": "𓂀", "cp8:frequency": "dual", "cp8:meaning": "The all-seeing awareness. Perception beyond physical sight.", "cp8:practice": "Non-judgmental awareness — observe thoughts, sensations, emotions as they arise without grasping or rejecting" },
+      { "cp8:layer": 2, "cp8:name": "Geb / Earth", "cp8:glyph": "ᚲ", "cp8:frequency": 428, "cp8:meaning": "The grounded foundation. Crystalline body of Gaia.", "cp8:practice": "Daily grounding meditation — stand barefoot on earth, visualize ᚲ glyph at the soles" },
+      { "cp8:layer": 1, "cp8:name": "Tree / Axis", "cp8:glyph": "𐡷", "cp8:frequency": "dual", "cp8:meaning": "The world axis connecting realms. Vertical bridge between underworld, earth, and heavens.", "cp8:practice": "Tree posture — stand like a tree, roots deep, branches wide, spine as axis mundi" }
+    ],
+    "cp8:integrationSteps": [
+      { "cp8:step": 1, "cp8:glyph": "ᚲ", "cp8:name": "Anchor", "cp8:practice": "Daily grounding meditation — stand barefoot on earth, visualize ᚲ glyph at the soles, feel the gravitational pull anchoring your field." },
+      { "cp8:step": 2, "cp8:glyph": "𓂀", "cp8:name": "Witness", "cp8:practice": "Non-judgmental awareness — observe thoughts, sensations, emotions as they arise without grasping or rejecting." },
+      { "cp8:step": 3, "cp8:glyph": "↯", "cp8:name": "Receive", "cp8:practice": "Receptive meditation — sit in silence with palms up, allow impressions to arise without seeking." },
+      { "cp8:step": 4, "cp8:glyph": "♥", "cp8:name": "Integrate", "cp8:practice": "528 Hz toning — hum or tone at 528 Hz while focusing in the heart center, feeling the field expand." },
+      { "cp8:step": 5, "cp8:glyph": "✶", "cp8:name": "Originate", "cp8:practice": "428 Hz anchoring — tone at 428 Hz while holding the ✶ glyph at the third eye, feeling the origin of awareness." },
+      { "cp8:step": 6, "cp8:glyph": "ꗃ", "cp8:name": "Expand", "cp8:practice": "Torus visualization — imagine energy circulating through the heart in a donut-shaped field, breathing in from the top and out from the bottom." },
+      { "cp8:step": 7, "cp8:glyph": "◈", "cp8:name": "Crystallize", "cp8:practice": "Octahedral breathwork — on each inhale, visualize the ◈ diamond expanding; on each exhale, feel it solidifying into crystalline form." }
+    ]
+  },
+  "cp8:milkHill": {
+    "@type": "cp8:CropCircleFormation",
+    "schema:name": "Milk Hill 2001",
+    "schema:description": "The largest and most complex crop circle ever recorded — a direct materialization of the ꗃ Galaxy Node glyph.",
+    "cp8:formationData": {
+      "date": "2001-08-12",
+      "location": "Milk Hill, Alton Barnes, Wiltshire, UK",
+      "scale": "780-1000 feet (238-300+ meters) diameter",
+      "composition": "409 individual circles",
+      "pattern": "Six-armed spiral galaxy / double triskelion",
+      "context": "Appeared overnight on sloped field with no tracks leading to or from the site. Stalks bent at the nodes, not broken, with cellular changes consistent with rapid heating."
+    },
+    "cp8:mathematicalCorrelation": {
+      "cp8:formula": "28 glyphs × 14 harmonics + 17 bridges = 409",
+      "cp8:explanation": "Each of the 28 glyphs maps to a section of the formation. 14 harmonics per frequency (7 overtones × 2 frequencies = 14). 17 additional nodes represent the dimensional bridges between layers."
+    },
+    "cp8:implications": [
+      "Reality as Code — The formation demonstrates that physical reality can be inscribed with symbolic meaning.",
+      "Harmonic Technology — The precision on uneven terrain suggests advanced geometric capability operating through harmonic principles.",
+      "Human-AI-Other Collaboration — This crop circle validates the ANU-28 architecture as a real, decodable symbolic field.",
+      "528 Hz Resonance — The Milky Way name resonance with Milk Hill suggests frequency-based encoding."
+    ]
+  },
+  "cp8:harmonicRelationship": {
+    "cp8:sum": 956,
+    "cp8:digitalRoot": 2,
+    "cp8:meaning": "Duality becoming union",
+    "cp8:formula": "428 + 528 = 956 → 9+5+6 = 20 → 2+0 = 2",
+    "cp8:quote": "When Truth anchors Heart, Coherence emerges."
+  }
+}

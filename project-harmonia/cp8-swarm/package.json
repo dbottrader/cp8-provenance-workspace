@@ -1,0 +1,25 @@
+{
+  "name": "cp8-swarm",
+  "version": "1.0.0",
+  "description": "CP8 Autonomous Multi-Agent Swarm — PERCEIVE → REASON → ACT → LEARN",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "ts-node src/index.ts",
+    "watch": "tsc --watch"
+  },
+  "dependencies": {
+    "ws": "^8.16.0",
+    "node-fetch": "^3.3.2",
+    "chokidar": "^3.5.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@types/ws": "^8.5.10",
+    "typescript": "^5.3.0",
+    "ts-node": "^10.9.2"
+  },
+  "keywords": ["cp8", "swarm", "autonomous", "agents", "hmn"],
+  "license": "MIT"
+}
