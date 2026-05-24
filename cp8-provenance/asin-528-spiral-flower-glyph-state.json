@@ -1,0 +1,65 @@
+{
+  "artifact_id": "ebcf7ec980806d38fc2cfb1e1ec1cfe4",
+  "name": "528 Spiral Flower — ASIN Glyph-State Map",
+  "patent": "USPTO Provisional #63/892,035",
+  "operator": "CP8",
+  "seed": 222,
+  "frequency_hz": 528,
+  "timestamp": "2026-05-24T03:34:39+08:00",
+  "rooms_status": {
+    "vault": true,
+    "resonance": true,
+    "workshop": true,
+    "bridge": true,
+    "expansion": false,
+    "archive": false
+  },
+  "runtime_state_map": {
+    "active_by_default": ["✶", "◎", "⧗", "⬡", "♓"],
+    "contextual_activations": {
+      "breath_change": ["⧉", "◬"],
+      "seed_reweave": ["ꗃ", "⟢"],
+      "spin_active": ["⧗", "Ϟ"],
+      "pause_state": ["⍟", "⎔"],
+      "audio_playing": ["◎", "⌬"]
+    },
+    "geometry_bindings": {
+      "center_dot": "✶",
+      "spiral_nodes": "⧗",
+      "ring_circles": "⬡",
+      "flower_lattice": "♓",
+      "radial_field": "⟡",
+      "oscillation_glow": "Ϟ",
+      "shadow_depth": "☯"
+    },
+    "numeric_anchors": {
+      "phi_ratio": "⬡",
+      "frequency_528": "◎",
+      "symmetry_6": "♓",
+      "arms_12": "ᚾ",
+      "breath_min_02": "⧉",
+      "breath_max_20": "∞",
+      "spin_range": "⧗",
+      "seed_rng": "ꗃ"
+    },
+    "user_action_map": {
+      "tap_pause": ["⍟", "⎔"],
+      "reseed": ["ꗃ", "⟢"],
+      "breath_adjust": ["⧉", "◬"],
+      "spin_adjust": ["⧗", "Ϟ"],
+      "tone_toggle": ["◎", "⌬"]
+    }
+  },
+  "asins": {
+    "A_anchor": "seed=222, Xorshift, requestAnimationFrame, 528Hz",
+    "S_shape": "point→circle→spiral→lattice→field, φ-driven, 6k",
+    "I_intention": "harmonic coherence, state machine via geometry",
+    "N_number": "528Hz, φ≈1.618, 6-fold, 12-arms, 0.2-2.0 breath"
+  },
+  "provenance": {
+    "source_gist": "https://gist.github.com/dbottrader/ebcf7ec980806d38fc2cfb1e1ec1cfe4",
+    "extracted_by": "Harmony Assistant v1.1",
+    "extraction_date": "2026-05-24",
+    "hash_sha256": "pending"
+  }
+}
